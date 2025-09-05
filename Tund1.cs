@@ -2,22 +2,52 @@
 
 namespace CSharpBasics.Tund1
 {
-    internal class Startclass
+    internal class Class
     {
-        public static void Main(string[] args)
+        public static void Start()
         {
             Console.ForegroundColor = ConsoleColor.DarkGreen;
             Console.OutputEncoding = Encoding.UTF8;
 
+            Assign.Start();
+
+            /*
+            // Part 2, Choices (switch, if and etc.)
+            int monthNum = Random.Shared.Next(1, 12);
+            string month = Methods.GetMonthName(monthNum);
+            string season = Methods.GetSeasonName(monthNum);
+            Console.WriteLine($"Kuu number: {monthNum}; Kuu nimi: {month}; See on {season}.");
+
+            Console.Write("\nKas tahad dekodeerida arv->nimetusse? => ");
+            string input = Console.ReadLine();
+            if (input.ToLower() != "jah")
+                Console.WriteLine("Ei taha, siis ei taha");
+            else
+            {
+                try
+                {
+                    Console.Write("Nr => ");
+                    monthNum = int.Parse(Console.ReadLine());
+
+                    month = Methods.GetMonthName(monthNum);
+                    season = Methods.GetSeasonName(monthNum);
+                    Console.WriteLine($"Kuu number: {monthNum}; Kuu nimi: {month}; See on {season}.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Viga! {ex.Message}");
+                }
+            }*/
+
+            /*
+            // Part 1; Data types, methods
             Random random = new();
 
             int randomA = random.Next(-100, 200);
             Console.WriteLine(randomA);
 
-            Tund1Methods methods = new Tund1Methods();
-            Console.WriteLine("Kalkulaatori tulemus: " + methods.Calculator(randomA, 2));
+            Console.WriteLine("Kalkulaatori tulemus: " + Tund1Methods.Calculator(randomA, 2));
 
-            /*
             Console.WriteLine("Tere tulemast!");
             Console.Write("Mis on sinu nimi? => ");
 
@@ -39,8 +69,8 @@ namespace CSharpBasics.Tund1
             float fl = float.Parse(Console.ReadLine());
             Console.WriteLine(fl);
 
-            bool b = true;
-            Console.WriteLine(b);*/
+            bool bol = true;
+            Console.WriteLine(bol);*/
         }
     }
 }
