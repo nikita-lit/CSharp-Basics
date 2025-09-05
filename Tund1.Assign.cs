@@ -7,7 +7,51 @@ namespace CSharpBasics
     {
         public static void Start()
         {
-            // ül 1:
+            while (true)
+            {
+                int choice = 0;
+                try
+                {
+                    Console.Write("Sisestage valik number => ");
+                    choice = int.Parse(Console.ReadLine());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Viga! {ex.Message}");
+                }
+
+                switch (choice)
+                {
+                    case 1:
+                        Assign1();
+                        break;
+                    case 2:
+                        Assign2();
+                        break;
+                    case 3:
+                        Assign3();
+                        break;
+                    case 4:
+                        Assign4();
+                        break;
+                    case 5:
+                        Assign5();
+                        break;
+                    case 6:
+                        Assign6();
+                        break;
+                    case 7:
+                        Assign7();
+                        break;
+                    case 8:
+                        Assign8();
+                        break;
+                }
+            }
+        }
+
+        public static void Assign1()
+        {
             Console.Write("Sisesta eesnimi => ");
             string name = Console.ReadLine();
 
@@ -38,19 +82,21 @@ namespace CSharpBasics
             }
 
             Console.WriteLine();
+        }
 
-            // ül 2:
+        public static void Assign2()
+        {
             Console.Write("Sisesta esimese inimese nimi => ");
             string name1 = Console.ReadLine().ToLower();
             Console.Write("Sisesta teise inimese nimi => ");
             string name2 = Console.ReadLine().ToLower();
 
-            if ((name1 == "hussein" && name2 == "maksim") 
+            if ((name1 == "hussein" && name2 == "maksim")
                 || (name1 == "maksim" && name2 == "hussein"))
             {
                 Console.WriteLine($"{name1} ja {name2} on täna pinginaabrid.");
             }
-            else if ((name1 == "maksim" && name2 == "nikita") 
+            else if ((name1 == "maksim" && name2 == "nikita")
                 || (name1 == "nikita" && name2 == "maksim"))
             {
                 Console.WriteLine($"{name1} ja {name2} on täna pinginaabrid.");
@@ -59,8 +105,10 @@ namespace CSharpBasics
                 Console.WriteLine($"{name1} ja {name2} ei ole täna pinginaabrid.");
 
             Console.WriteLine();
+        }
 
-            // ül 3:
+        public static void Assign3()
+        {
             try
             {
                 Console.Write("Sisesta toa pikkus meetrites => ");
@@ -68,7 +116,6 @@ namespace CSharpBasics
 
                 Console.Write("Sisesta toa laius meetrites => ");
                 float width = float.Parse(Console.ReadLine());
-            
 
                 float area = length * width;
                 Console.WriteLine($"Toa põranda pindala on {area} m2.");
@@ -89,8 +136,10 @@ namespace CSharpBasics
             }
 
             Console.WriteLine();
+        }
 
-            // ül 4:
+        public static void Assign4()
+        {
             try
             {
                 Console.Write("Sisesta hind peale 30% allahindlust => ");
@@ -104,8 +153,10 @@ namespace CSharpBasics
             }
 
             Console.WriteLine();
+        }
 
-            // ül 5:
+        public static void Assign5()
+        {
             Console.Write("Sisesta temperatuur => ");
             float temp = float.Parse(Console.ReadLine());
             if (temp > 18)
@@ -114,8 +165,10 @@ namespace CSharpBasics
                 Console.WriteLine("Temperatuur on alla või võrdne 18 kraadi.");
 
             Console.WriteLine();
+        }
 
-            // ül 6:
+        public static void Assign6()
+        {
             try
             {
                 Console.Write("Sisesta oma pikkus sentimeetrites => ");
@@ -133,8 +186,10 @@ namespace CSharpBasics
             }
 
             Console.WriteLine();
+        }
 
-            // ül 7:
+        public static void Assign7()
+        {
             try
             {
                 Console.Write("Sisesta sugu (mees/naine) => ");
@@ -170,8 +225,10 @@ namespace CSharpBasics
             }
 
             Console.WriteLine();
+        }
 
-            // ül 8:
+        public static void Assign8()
+        {
             float summa2 = 0;
 
             Console.Write("Kas soovid osta piima? (jah/ei) => ");
