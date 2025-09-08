@@ -50,8 +50,6 @@
                 person.Name = Console.ReadLine();
                 Console.Write("Perenimi: ");
                 person.LastName = Console.ReadLine();
-                Console.Write("Synniaasta: ");
-                person.BirthYear = int.Parse(Console.ReadLine());
 
                 persons.Add(person);
                 j++;

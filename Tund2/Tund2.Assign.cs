@@ -1,10 +1,8 @@
-﻿using System.IO;
-
-namespace CSharpBasics.Tund2
+﻿namespace CSharpBasics.Tund2
 {
-    internal class ArvuTöötlus
+    internal class Assign
     {
-        public static void Main(string[] args)
+        public static void Start()
         {
             GenereeriRuudud(0, 10);
 
@@ -12,6 +10,8 @@ namespace CSharpBasics.Tund2
             Console.WriteLine($"Summa: {result2.Item1}");
             Console.WriteLine($"Keskmine: {result2.Item2}");
             Console.WriteLine($"korrutis: {result2.Item3}");
+
+            Inimised();
         }
 
         public static int[] GenereeriRuudud(int min, int max)
@@ -73,6 +73,47 @@ namespace CSharpBasics.Tund2
 
             double average = sum / arvud.Length;
             return Tuple.Create(sum, average, product);
+        }
+
+        public static void Inimised()
+        {
+            List<Person> people = new List<Person>();
+
+            for (int i = 0; i < 5; i++)
+            {
+                Console.Write($"Sisesta {i + 1}. inimese nimi => ");
+                string name = Console.ReadLine();
+
+                int age;
+                while (true)
+                {
+                    Console.Write($"Sisesta {name} vanus => ");
+                    if (!int.TryParse(Console.ReadLine(), out age) && age <= 0)
+                        Console.WriteLine("Viga!");
+                    else
+                        break;
+                }
+
+                people.Add(new Person(name, age));
+            }
+
+            var statistika = Statistika(people);
+
+            Console.WriteLine($"Vanuste summa: {statistika.Item1}");
+            Console.WriteLine($"Vanuste keskmine: {statistika.Item2}");
+            Console.WriteLine($"Vanim inimene: {statistika.Item3.Name}, {statistika.Item3.Age} aastat");
+            Console.WriteLine($"Noorim inimene: {statistika.Item4.Name}, {statistika.Item4.Age} aastat");
+        }
+
+        public static Tuple<int, double, Person, Person> Statistika(List<Person> people)
+        {
+            int sum = people.Sum(i => i.Age);
+            double average = people.Average(i => i.Age);
+
+            Person oldest = people.OrderByDescending(i => i.Age).First();
+            Person youngest = people.OrderBy(i => i.Age).First();
+
+            return Tuple.Create(sum, average, oldest, youngest);
         }
     }
 }

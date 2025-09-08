@@ -9,6 +9,7 @@ namespace CSharpBasics
         {
             //Tund1.Class.Start();
             //Tund2.Class.Start();
+            Tund2.Assign.Start();
         }
     }
 }
