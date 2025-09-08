@@ -8,7 +8,7 @@ namespace CSharpBasics
         public static void Main(string[] args)
         {
             //Tund1.Class.Start();
-            Tund2.Class.Start();
+            //Tund2.Class.Start();
         }
     }
 }

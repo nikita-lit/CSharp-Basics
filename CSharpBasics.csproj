@@ -5,7 +5,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <StartupObject>CSharpBasics.Program</StartupObject>
+    <StartupObject>CSharpBasics.Tund2.ArvuTöötlus</StartupObject>
   </PropertyGroup>
 
 </Project>

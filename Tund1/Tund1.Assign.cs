@@ -1,7 +1,7 @@
 ﻿using CSharpBasics.Tund1;
 using System;
 
-namespace CSharpBasics
+namespace CSharpBasics.Tund1
 {
     internal class Assign
     {
