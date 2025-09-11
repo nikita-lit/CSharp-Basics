@@ -4,14 +4,23 @@
     {
         public static void Start()
         {
-            GenereeriRuudud(0, 10);
+            // ül 1
+            //GenereeriRuudud(0, 10);
 
-            var result2 = AnalüüsiArve(From_numbers());
-            Console.WriteLine($"Summa: {result2.Item1}");
-            Console.WriteLine($"Keskmine: {result2.Item2}");
-            Console.WriteLine($"korrutis: {result2.Item3}");
+            // ül 2
+            //var result2 = AnalüüsiArve(From_numbers());
+            //Console.WriteLine($"Summa: {result2.Item1}");
+            //Console.WriteLine($"Keskmine: {result2.Item2}");
+            //Console.WriteLine($"korrutis: {result2.Item3}");
 
-            Inimised();
+            // ül 3
+            //Inimised();
+
+            // ül 4
+            Console.WriteLine();
+            Console.Write("Sisesta märksõna => ");
+            string input = Console.ReadLine();
+            Console.WriteLine(KuniMärksõnani(input));
         }
 
         public static int[] GenereeriRuudud(int min, int max)
@@ -97,12 +106,12 @@
                 people.Add(new Person(name, age));
             }
 
-            var statistika = Statistika(people);
+            var stats = Statistika(people);
 
-            Console.WriteLine($"Vanuste summa: {statistika.Item1}");
-            Console.WriteLine($"Vanuste keskmine: {statistika.Item2}");
-            Console.WriteLine($"Vanim inimene: {statistika.Item3.Name}, {statistika.Item3.Age} aastat");
-            Console.WriteLine($"Noorim inimene: {statistika.Item4.Name}, {statistika.Item4.Age} aastat");
+            Console.WriteLine($"Vanuste summa: {stats.Item1}");
+            Console.WriteLine($"Vanuste keskmine: {stats.Item2}");
+            Console.WriteLine($"Vanim inimene: {stats.Item3.Name}, {stats.Item3.Age} aastat");
+            Console.WriteLine($"Noorim inimene: {stats.Item4.Name}, {stats.Item4.Age} aastat");
         }
 
         public static Tuple<int, double, Person, Person> Statistika(List<Person> people)
@@ -114,6 +123,21 @@
             Person youngest = people.OrderBy(i => i.Age).First();
 
             return Tuple.Create(sum, average, oldest, youngest);
+        }
+
+        public static string KuniMärksõnani(string märksõna)
+        {
+            List<string> strings = new List<string>();
+            string fraas = "";
+
+            do
+            {
+                Console.Write("Osta elevant ära!");
+                fraas = Console.ReadLine();
+            }
+            while (fraas.ToLower() != märksõna.ToLower());
+
+            return fraas;
         }
     }
 }
