@@ -1,4 +1,6 @@
-﻿namespace CSharpBasics.Tund2
+﻿using System;
+
+namespace CSharpBasics.Tund2
 {
     internal class Assign
     {
@@ -17,10 +19,19 @@
             //Inimised();
 
             // ül 4
-            Console.WriteLine();
-            Console.Write("Sisesta märksõna => ");
-            string input = Console.ReadLine();
-            Console.WriteLine(KuniMärksõnani(input));
+            //Console.WriteLine();
+            //Console.Write("Sisesta märksõna => ");
+            //string input = Console.ReadLine();
+            //Console.WriteLine("Tubli! Märksõna oli " + KuniMärksõnani(input));
+
+            // ül 5
+            //ArvaArv();
+
+            // ül 6
+            SuurimNeljarv();
+
+            // ül 7
+            //GenereeriKorrutustabel(5, 10);
         }
 
         public static int[] GenereeriRuudud(int min, int max)
@@ -132,12 +143,93 @@
 
             do
             {
-                Console.Write("Osta elevant ära!");
+                Console.WriteLine("Arva ära!");
                 fraas = Console.ReadLine();
             }
             while (fraas.ToLower() != märksõna.ToLower());
 
             return fraas;
+        }
+
+        public static void ArvaArv()
+        {
+            int randNum = Random.Shared.Next(1, 100);
+            int num = 0;
+            int tryCount = 5;
+
+            do
+            {
+                Console.WriteLine($"Arva ära! {tryCount} katset.");
+                num = int.Parse(Console.ReadLine());
+                if (num < randNum)
+                    Console.WriteLine("Liiga väike");
+                else if (num > randNum)
+                    Console.WriteLine("Liiga suur");
+                else if (num != randNum)
+                    Console.WriteLine("Vale!");
+
+                tryCount--;
+            }
+            while(num != randNum && tryCount > 0);
+
+            if (tryCount <= 0)
+                Console.WriteLine("Katse ei ole jäänud!");
+            else
+                Console.WriteLine($"Õige!");
+
+            Console.WriteLine($"Arv oli {randNum}");
+
+            Console.WriteLine();
+            Console.Write("Kas te soovite uuesti mängida? (jah/ei) => ");
+
+            string input = Console.ReadLine().ToLower();
+            if (input == "jah")
+            {
+                Console.WriteLine();
+                ArvaArv();
+            }
+        }
+
+        public static void SuurimNeljarv()
+        {
+            List<int> list = new List<int>();
+            for (int i = 0; i < 4; i++)
+            {
+                Console.WriteLine($"{i+1}. Arv");
+
+                while(true)
+                {
+                    int num = int.Parse(Console.ReadLine());
+                    if (num >= 0 && num < 10)
+                    {
+                        list.Add(num);
+                        break;
+                    }
+                    else
+                        Console.WriteLine("Vale arv! Ainult 0-9");
+                }
+
+                Console.WriteLine();
+            }
+
+            list.Sort((x, y) => y.CompareTo(x));
+
+            string result = string.Join("", list);
+            Console.WriteLine("Suurim neliarvuline arv: " + result);
+        }
+
+        public static void GenereeriKorrutustabel(int ridadeArv, int veergudeArv)
+        {
+            /*
+            for (int i = 1; i <= ridadeArv; i++)
+            {
+                for (int j = 1; j <= veergudeArv; j++)
+                {
+                    Console.Write($"{i * j} ");
+                }
+                Console.WriteLine();
+            }
+            */
         }
     }
 }
