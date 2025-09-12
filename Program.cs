@@ -1,7 +1,4 @@
-﻿using CSharpBasics.Tund1;
-using CSharpBasics.Tund2;
-
-namespace CSharpBasics
+﻿namespace CSharpBasics
 {
     internal class Program
     {
@@ -9,7 +6,7 @@ namespace CSharpBasics
         {
             //Tund1.Class.Start();
             //Tund2.Class.Start();
-            Tund2.Assign.Start();
+            Tund3.Class.Start();
         }
     }
 }

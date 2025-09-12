@@ -28,10 +28,10 @@ namespace CSharpBasics.Tund2
             //ArvaArv();
 
             // ül 6
-            SuurimNeljarv();
+            //SuurimNeljarv();
 
             // ül 7
-            //GenereeriKorrutustabel(5, 10);
+            GenereeriKorrutustabel(5, 10);
         }
 
         public static int[] GenereeriRuudud(int min, int max)
@@ -218,18 +218,21 @@ namespace CSharpBasics.Tund2
             Console.WriteLine("Suurim neliarvuline arv: " + result);
         }
 
-        public static void GenereeriKorrutustabel(int ridadeArv, int veergudeArv)
+        public static int[,] GenereeriKorrutustabel(int ridadeArv, int veergudeArv)
         {
-            /*
-            for (int i = 1; i <= ridadeArv; i++)
+            int[,] tabel = new int[ridadeArv, veergudeArv];
+            for (int i = 0; i < ridadeArv; i++)
             {
-                for (int j = 1; j <= veergudeArv; j++)
+                for (int j = 0; j < veergudeArv; j++)
                 {
-                    Console.Write($"{i * j} ");
+                    tabel[i, j] = (i + 1) * (j + 1);
+                    Console.Write($"{tabel[i, j]}\t");
                 }
                 Console.WriteLine();
+                Console.WriteLine();
             }
-            */
+
+            return tabel;
         }
     }
 }

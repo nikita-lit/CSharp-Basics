@@ -1,0 +1,8 @@
+﻿Õun=50
+Banaan=90
+Riis=130
+Kanafilee=165
+Kartul=80
+Juust=400
+Pirn=60
+Porgand=30
