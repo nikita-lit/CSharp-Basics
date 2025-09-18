@@ -8,7 +8,6 @@ namespace CSharpBasics.Tund3
         public static void Start()
         {
             ArrayList();
-
         }
 
         public static void ArrayList()

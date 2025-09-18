@@ -2,17 +2,19 @@
 {
     internal class Class
     {
+        //задания 1, 2 и на выбор
+
         public static void Start()
         {
-            //string pathKuudtxt = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund3\\kuud.txt");
-            //FileWrite(pathKuudtxt);
+            /*
+            string pathKuudtxt = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund3\\kuud.txt");
+            FileWrite(pathKuudtxt);
 
-            //Console.WriteLine();
-            //Console.WriteLine("--------------- File Read ---------------");
-            //FileRead(pathKuudtxt).ForEach(x => Console.WriteLine(x));
+            Console.WriteLine();
+            Console.WriteLine("--------------- File Read ---------------");
+            FileRead(pathKuudtxt).ForEach(x => Console.WriteLine(x));*/
 
-            //Tund3.Collections.Start();
-            Tund3.Assign.Start();
+            Ülesanded.Ülesanne1.Start();
         }
 
         public static void FileWrite(string pathKuudtxt)
