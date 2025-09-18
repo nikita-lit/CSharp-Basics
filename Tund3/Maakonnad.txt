@@ -1,0 +1,4 @@
+﻿Harjumaa=Tallinn
+Ida-Virumaa=Narva
+Tartumaa=Tartu
+Pärnumaa=Pärnu

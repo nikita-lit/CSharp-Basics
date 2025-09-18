@@ -13,8 +13,6 @@
             Console.WriteLine();
             Console.WriteLine("--------------- File Read ---------------");
             FileRead(pathKuudtxt).ForEach(x => Console.WriteLine(x));*/
-
-            Ülesanded.Ülesanne1.Start();
         }
 
         public static void FileWrite(string pathKuudtxt)

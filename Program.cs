@@ -4,11 +4,7 @@
     {
         public static void Main(string[] args)
         {
-            while (true)
-            {
-                Console.Write("Valik arv => ");
-                string input = Console.ReadLine();
-            }
+            Tund3.Ülesanded.Ülesanne4.Start();
         }
     }
 }
