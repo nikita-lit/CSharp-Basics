@@ -13,6 +13,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             OpenMenu(data);
         }
 
+        //-----------------------------------
         private static void OpenMenu(Dictionary<string, string> data)
         {
             while (true)
@@ -49,6 +50,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             }
         }
 
+        //-----------------------------------
         private static void ShowOptions()
         {
             Console.WriteLine("1. Leia maakond pealinna järgi");
@@ -58,6 +60,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             Console.Write("Valik => ");
         }
 
+        //-----------------------------------
         private static Dictionary<string, string> LoadRegionData()
         {
             var result = new Dictionary<string, string>();
@@ -79,6 +82,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             return result;
         }
 
+        //-----------------------------------
         private static void WriteToFile(string line)
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund3\\maakonnad.txt");
@@ -95,6 +99,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             }
         }
 
+        //-----------------------------------
         private static void FindRegionByCapital(Dictionary<string, string> data)
         {
             Console.Write("Sisesta pealinna nimi => ");
@@ -126,6 +131,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             }
         }
 
+        //-----------------------------------
         private static void FindCapitalByRegion(Dictionary<string, string> data)
         {
             Console.Write("Sisesta maakonna nimi => ");
@@ -146,6 +152,7 @@ namespace CSharpBasics.Tund3.Ülesanded
             }
         }
 
+        //-----------------------------------
         private static void StartQuiz(Dictionary<string, string> data)
         {
             Console.WriteLine("Mäng algas.");

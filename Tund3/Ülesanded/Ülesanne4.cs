@@ -14,7 +14,6 @@
         }
     }
 
-
     //-----------------------------------
     // OSA 5 - Ülesanne 4: Filmide kogu
     //-----------------------------------
@@ -54,16 +53,19 @@
             }
         }
 
+        //-----------------------------------
         public static List<Film> FindFilmByGenre(List<Film> films, string genre)
         {
             return films.Where(f => f.Genre.ToLower() == genre.ToLower()).ToList();
         }
 
+        //-----------------------------------
         public static Film FindNewestFilm(List<Film> filmid)
         {
             return filmid.OrderByDescending(f => f.Year).First();
         }
 
+        //-----------------------------------
         public static Dictionary<string, List<Film>> GroupByGenre(List<Film> filmid)
         {
             return filmid.GroupBy(f => f.Genre).ToDictionary(g => g.Key, g => g.ToList());

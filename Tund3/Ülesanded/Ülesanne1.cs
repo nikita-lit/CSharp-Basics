@@ -39,7 +39,7 @@
     {
         public static void Start()
         {
-            var products = Ül1_FindProducts();
+            var products = FindProducts();
             Console.WriteLine("Toodete nimekiri: ");
             products.ForEach(x => Console.WriteLine(x.Name + ", " + x.Calories + " cal"));
 
@@ -51,8 +51,8 @@
                 string input = Console.ReadLine().ToLower();
                 if (input == "jah")
                 {
-                    Ül1_AddProduct();
-                    products = Ül1_FindProducts();
+                    AddProduct();
+                    products = FindProducts();
                 }
                 else
                     break;
@@ -102,7 +102,7 @@
                 activityFactor
             );
 
-            double cals = Ül1_CalcCal(person);
+            double cals = CalcCal(person);
             Console.WriteLine();
             Console.WriteLine($"{person.Name}, sinu päevane energiavajadus on umbes {Math.Round(cals, 0)} cal.");
 
@@ -119,7 +119,7 @@
         }
 
         //-----------------------------------
-        public static List<Product> Ül1_FindProducts()
+        public static List<Product> FindProducts()
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund3\\tooted.txt");
             List<Product> list = new List<Product>();
@@ -136,7 +136,7 @@
         }
 
         //-----------------------------------
-        public static void Ül1_AddProduct()
+        public static void AddProduct()
         {
             string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund3\\tooted.txt");
 
@@ -162,7 +162,7 @@
         }
 
         //-----------------------------------
-        public static double Ül1_CalcCal(Person person)
+        public static double CalcCal(Person person)
         {
             if (person.Gender == "n")
                 return 655.1

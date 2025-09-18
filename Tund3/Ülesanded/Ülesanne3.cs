@@ -61,6 +61,7 @@
             Console.WriteLine($"Kõrgeim keskmine on {Math.Round(GetStudentAverageGrade(best), 1)}, õpilasel {best.Name}");
         }
 
+        //-----------------------------------
         public static double GetStudentAverageGrade(Student student)
         {
             return student.Grades.Average();
