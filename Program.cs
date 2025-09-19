@@ -4,7 +4,7 @@
     {
         public static void Main(string[] args)
         {
-            Tund4.Class.Start();
+            Tund4.Ülesanded.Ülessanne1.Class.Start();
         }
     }
 }

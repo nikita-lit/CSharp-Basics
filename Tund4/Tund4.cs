@@ -122,6 +122,9 @@
     {
         public static void Start()
         {
+            Kujundid.Class.Start();
+
+            /*
             var pank = new Pank();
 
             var inimene = new Õpilane();
@@ -135,7 +138,7 @@
             töötaja.Vanus = 45;
             töötaja.Ametikoht = "Autojuht";
             töötaja.Tervita();
-            töötaja.MidaTeeb();
+            töötaja.MidaTeeb();*/
 
             /*
             var veoauto = new Veoauto();
@@ -164,9 +167,10 @@
 
             list.ForEach(x => x.Info());*/
 
+            /*
             Console.WriteLine();
 
-            töötaja.Tunnid = 90;
+            töötaja.Tunnid = 130;
 
             pank.CreateAccount(töötaja, "1234");
             var acc = pank.GetAccount(töötaja, "1234");
@@ -183,7 +187,7 @@
                 acc.VõtaRaha(200);
 
                 acc.LisaRaha(500);
-            }
+            }*/
         }
     }
 }

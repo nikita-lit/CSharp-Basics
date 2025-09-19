@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.Metrics;
-
-namespace CSharpBasics.Tund3.Ülesanded
+﻿namespace CSharpBasics.Tund3.Ülesanded
 {
     //-----------------------------------
     // OSA 5 - Ülesanne 2: Maakonnad ja pealinnad (sõnastik ja test)
