@@ -1,4 +1,4 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Ülessanne1
+﻿namespace CSharpBasics.Tund4.Ülesanded.Ülesanne1
 {
     public enum FuelType
     {
@@ -9,19 +9,20 @@
 
     public abstract class Vehicle : IVehicle
     {
+        public string Type { get; set; }
+
         protected FuelType _fuelType;
         protected double _fuelUsage;
-        protected double _fuelPrice;
+        public double FuelPrice;
         protected double _traveledDistance;
-        public uint PassengersCount;
+        public int PassengersCount;
 
-        /// <param name="fuelUsage">l, kWh or 0</param>
-        /// <param name="distance">km</param>
-        public Vehicle(FuelType fuelType, double fuelUsage, double fuelPrice, double traveledDistance, uint passengersCount)
+        public Vehicle(string type, FuelType fuelType, double fuelUsage, double fuelPrice, double traveledDistance, int passengersCount)
         {
+            Type = type;
             _fuelType = fuelType;
             _fuelUsage = fuelUsage;
-            _fuelPrice = fuelPrice;
+            FuelPrice = fuelPrice;
             _traveledDistance = traveledDistance;
             PassengersCount = passengersCount;
         }
@@ -36,28 +37,24 @@
             if (_fuelType == FuelType.None)
                 return 0;
 
-            return (_fuelUsage / 100);
-        }
-
-        public virtual double GetFuelPrice(double price)
-        {
-            return GetFuelUsage() * GetTraveledDistance() * price;
+            return _fuelUsage;
         }
 
         public virtual double GetFuelPrice()
         {
-            return GetFuelUsage() * GetTraveledDistance() * _fuelPrice;
+            return GetFuelUsage() * (GetTraveledDistance() / 100) * FuelPrice;
         }
 
         public override string ToString()
         {
             if (_fuelType == FuelType.None)
-                return $"Vahemaa: {GetTraveledDistance()} km";
+                return $"[ Vahemaa: {GetTraveledDistance()} km ]";
 
+            string fuelType = "l";
             if (_fuelType == FuelType.Electricity)
-                return $"[ Kulu: {GetFuelUsage()} kWh/100 ][ Vahemaa: {GetTraveledDistance()} km ]";
+                fuelType = "kWh";
 
-            return $"[ Kulu: {GetFuelUsage()} l/100 ][ Vahemaa: {GetTraveledDistance()} km ]";
+            return $"[ Kulu: {GetFuelUsage()} {fuelType}/100 km ][ Kütuse hind: {FuelPrice} euro ({fuelType} kohta) ][ Vahemaa: {GetTraveledDistance()} km ][ Reisijate arv: {PassengersCount} ]";
         }
     }
 }
