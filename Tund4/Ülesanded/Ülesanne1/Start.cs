@@ -16,92 +16,91 @@
                 "mootorratas",
             };
 
-            while (true)
+            Console.Write("Kasutada txt-faili (Sõidukid.text) sisendandmetena? (jah/ei) => ");
+            string input = Console.ReadLine().Trim().ToLower();
+
+            if (input == "jah")
+                vehicles = LoadDataFromTXT(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund4\\ülesanded\\ülesanne1\\sõidukid.txt"));
+            else
             {
-                Console.Write("Kasutada txt-faili (Sõidukid.text) sisendandmetena? (jah/ei) => ");
-                string input = Console.ReadLine().Trim().ToLower();
-
-                if (input == "jah")
+                while (true)
                 {
-                    vehicles = LoadDataFromTXT(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\tund4\\ülesanded\\ülesanne1\\sõidukid.txt"));
-                    break;
-                }
+                    Console.Write("Sisesta sõiduki tüüp (");
+                    vehiclesNames.ForEach(x => Console.Write(" " + x));
+                    Console.Write(" ) või 'ei', et lõpetada => ");
 
-                Console.Write("Sisesta sõiduki tüüp (");
-                vehiclesNames.ForEach(x => Console.Write(" "+x));
-                Console.Write(" ) või 'ei', et lõpetada => ");
+                    string type = Console.ReadLine().Trim().ToLower();
+                    if (string.IsNullOrEmpty(type))
+                        break;
 
-                string type = Console.ReadLine().Trim().ToLower();
-                if (string.IsNullOrEmpty(type))
-                    break;
+                    if (type == "ei")
+                        break;
 
-                if (type == "ei")
-                    break;
-
-                if (!vehiclesNames.Contains(type))
-                {
-                    Console.WriteLine("Tundmatu sõiduki tüüp.");
-                    break;
-                }
-
-                Console.WriteLine();
-
-                try
-                {
-                    FuelType fuelType = FuelType.Petrol;
-                    bool isElectric = false;
-                    double fuel = 0;
-                    double price = 0;
-                    int passengers = 1;
-
-                    if (type == "auto" || type == "buss" || type == "mootorratas")
+                    if (!vehiclesNames.Contains(type))
                     {
-                        Console.Write($"Kas {type} on elektriline? (jah/ei) => ");
-                        string electric = Console.ReadLine().ToLower();
-                        isElectric = electric == "jah";
-
-                        if (isElectric)
-                        {
-                            fuelType = FuelType.Electricity;
-                            Console.Write("Sisesta kütusekulu (kWh/100 km) => ");
-                        }
-                        else
-                            Console.Write("Sisesta kütusekulu (l/100 km) => ");
-
-                        fuel = double.Parse(Console.ReadLine());
-
-                        if (isElectric)
-                            Console.Write("Sisesta kütuse hind (kWh kohta) => ");
-                        else
-                            Console.Write("Sisesta kütuse hind (liitri kohta) => ");
-
-                        price = double.Parse(Console.ReadLine());
+                        Console.WriteLine("Tundmatu sõiduki tüüp.");
+                        break;
                     }
 
-                    Console.Write("Sisesta vahemaa (km) => ");
-                    double dist = double.Parse(Console.ReadLine());
+                    Console.WriteLine();
 
-                    if (type == "buss")
+                    try
                     {
-                        while(true)
+                        FuelType fuelType = FuelType.Petrol;
+                        bool isElectric = false;
+                        double fuel = 0;
+                        double price = 0;
+                        int passengers = 1;
+
+                        if (type == "auto" || type == "buss" || type == "mootorratas")
                         {
-                            Console.Write("Sisesta reisijate arv => ");
-                            passengers = int.Parse(Console.ReadLine());
-                            if (passengers > 0)
-                                break;
-                            else if (passengers <= 0)
-                                Console.WriteLine("Viga! Reisijate arv ei saa olla 0 või negatiivne.");
+                            Console.Write($"Kas {type} on elektriline? (jah/ei) => ");
+                            string electric = Console.ReadLine().ToLower();
+                            isElectric = electric == "jah";
+
+                            if (isElectric)
+                            {
+                                fuelType = FuelType.Electricity;
+                                Console.Write("Sisesta kütusekulu (kWh/100 km) => ");
+                            }
+                            else
+                                Console.Write("Sisesta kütusekulu (l/100 km) => ");
+
+                            fuel = double.Parse(Console.ReadLine());
+
+                            if (isElectric)
+                                Console.Write("Sisesta kütuse hind (kWh kohta) => ");
+                            else
+                                Console.Write("Sisesta kütuse hind (liitri kohta) => ");
+
+                            price = double.Parse(Console.ReadLine());
                         }
+
+                        Console.Write("Sisesta vahemaa (km) => ");
+                        double dist = double.Parse(Console.ReadLine());
+
+                        if (type == "buss")
+                        {
+                            while (true)
+                            {
+                                Console.Write("Sisesta reisijate arv => ");
+                                passengers = int.Parse(Console.ReadLine());
+                                if (passengers > 0)
+                                    break;
+                                else if (passengers <= 0)
+                                    Console.WriteLine("Viga! Reisijate arv ei saa olla 0 või negatiivne.");
+                            }
+                        }
+
+                        vehicles.Add(CreateVehicle(type, fuelType, fuel, price, dist, passengers));
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Viga! {ex.Message}");
                     }
 
-                    vehicles.Add(CreateVehicle(type, fuelType, fuel, price, dist, passengers));
+                    Console.WriteLine();
                 }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Viga! {ex.Message}");
-                }
-
-                Console.WriteLine();
             }
 
             Console.WriteLine();
