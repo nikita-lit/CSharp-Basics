@@ -52,13 +52,13 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public void HandleKey(ConsoleKey key)
         {
-            if (key == ConsoleKey.LeftArrow)
+            if (key == ConsoleKey.LeftArrow && Direction != Direction.Right)
                 Direction = Direction.Left;
-            else if (key == ConsoleKey.RightArrow)
+            else if (key == ConsoleKey.RightArrow && Direction != Direction.Left)
                 Direction = Direction.Right;
-            else if (key == ConsoleKey.UpArrow)
+            else if (key == ConsoleKey.UpArrow && Direction != Direction.Down)
                 Direction = Direction.Up;
-            else if (key == ConsoleKey.DownArrow)
+            else if (key == ConsoleKey.DownArrow && Direction != Direction.Up)
                 Direction = Direction.Down;
         }
 

@@ -8,10 +8,10 @@
         {
             Figures = new List<Figure>();
 
-            Figures.Add(new HorizontalLine(0, 78, 0, '+'));
-            Figures.Add(new HorizontalLine(0, 78, 24, '+'));
-            Figures.Add(new VerticalLine(0, 24, 0, '+'));
-            Figures.Add(new VerticalLine(0, 24, 78, '+'));       
+            Figures.Add(new HorizontalLine(0, mapWidth, 0, '+'));
+            Figures.Add(new HorizontalLine(0, mapWidth, mapHeight, '+'));
+            Figures.Add(new VerticalLine(0, mapHeight, 0, '+'));
+            Figures.Add(new VerticalLine(0, mapHeight, mapWidth, '+'));       
         }
 
         public bool IsHit( Figure figure )

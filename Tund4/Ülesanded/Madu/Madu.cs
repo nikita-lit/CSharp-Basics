@@ -2,8 +2,8 @@
 {
     internal class Madu
     {
-        public const int MAP_WIDTH = 85;
-        public const int MAP_HEIGHT = 25;
+        public const int MAP_WIDTH = 32;
+        public const int MAP_HEIGHT = 16;
 
         public static void Start()
         {
@@ -12,9 +12,13 @@
 
             Point p = new Point(4, 5, '*');
             Snake snake = new Snake(p, 4, Direction.Right);
+            snake.Draw();
 
             FoodCreator foodCreator = new FoodCreator(MAP_WIDTH, MAP_HEIGHT, '$');
             Point food = foodCreator.CreateFood();
+
+            int points = 0;
+            DrawPoints(points);
 
             while (true)
             {
@@ -22,7 +26,11 @@
                     break;
 
                 if (snake.Eat(food))
+                {
                     food = foodCreator.CreateFood();
+                    points++;
+                    DrawPoints(points);
+                }
                 else
                     snake.Move();
 
@@ -35,14 +43,20 @@
                 Thread.Sleep(100);
             }
 
-            string gameOver = "GAME OVER";
-            Console.SetCursorPosition((MAP_WIDTH/2) - gameOver.Length, MAP_HEIGHT/2);
+            string gameOver = "<== GAME OVER ==>";
+            Console.SetCursorPosition((MAP_WIDTH/2) - (gameOver.Length/2), MAP_HEIGHT/2);
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(gameOver);
             Console.ForegroundColor = ConsoleColor.White;
 
             Console.ReadKey();
+        }
+
+        public static void DrawPoints(int points)
+        {
+            Console.SetCursorPosition(MAP_WIDTH + 5, 0);
+            Console.WriteLine($"POINTS: {points}");
         }
     }
 }
