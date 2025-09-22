@@ -20,24 +20,47 @@
             int points = 0;
             DrawPoints(points);
 
+            bool isPaused = false;
+
             while (true)
             {
                 if (walls.IsHit(snake) || snake.IsHitTail())
                     break;
 
-                if (snake.Eat(food))
+                if (!isPaused)
                 {
-                    food = foodCreator.CreateFood();
-                    points++;
-                    DrawPoints(points);
+                    if (snake.Eat(food))
+                    {
+                        food = foodCreator.CreateFood();
+                        points++;
+                        DrawPoints(points);
+                    }
+                    else
+                        snake.Move();
                 }
-                else
-                    snake.Move();
 
                 if (Console.KeyAvailable)
                 {
-                    ConsoleKeyInfo key = Console.ReadKey();
-                    snake.HandleKey(key.Key);
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    if (!isPaused)
+                        snake.HandleKey(key.Key);
+
+                    if (key.Key == ConsoleKey.T)
+                    {
+                        isPaused = !isPaused;
+                        string gamePaused = "GAME PAUSED";
+
+                        if (isPaused)
+                        {
+                            Console.SetCursorPosition(MAP_WIDTH + 5, 1);
+                            Console.WriteLine(gamePaused);
+                        }
+                        else
+                        {
+                            Console.SetCursorPosition(MAP_WIDTH + 5, 1);
+                            Console.WriteLine(new string(' ', gamePaused.Length));
+                        }
+                    }
                 }
 
                 Thread.Sleep(100);

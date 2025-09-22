@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Snake : Figure
     {

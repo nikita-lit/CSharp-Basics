@@ -11,7 +11,7 @@
             Figures.Add(new HorizontalLine(0, mapWidth, 0, '+'));
             Figures.Add(new HorizontalLine(0, mapWidth, mapHeight, '+'));
             Figures.Add(new VerticalLine(0, mapHeight, 0, '+'));
-            Figures.Add(new VerticalLine(0, mapHeight, mapWidth, '+'));       
+            Figures.Add(new VerticalLine(0, mapHeight, mapWidth, '+'));    
         }
 
         public bool IsHit( Figure figure )
