@@ -40,7 +40,7 @@
             return _fuelUsage;
         }
 
-        public virtual double GetFuelPrice()
+        public virtual double CalcFuelPrice()
         {
             return GetFuelUsage() * (GetTraveledDistance() / 100) * FuelPrice;
         }

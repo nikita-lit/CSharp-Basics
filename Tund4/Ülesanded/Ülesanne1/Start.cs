@@ -111,8 +111,8 @@
             {
                 Console.WriteLine(vehicle.Type + ": ");
                 Console.WriteLine(vehicle.ToString());
-                totalCost += vehicle.GetFuelPrice();
-                Console.WriteLine($"Hind: {vehicle.GetFuelPrice()} euro");
+                totalCost += vehicle.CalcFuelPrice();
+                Console.WriteLine($"Hind: {vehicle.CalcFuelPrice()} euro");
                 Console.WriteLine();
             }
 

@@ -6,7 +6,7 @@
             : base("Buss", fuelType, fuelUsage, fuelPrice, distance, passengersCount)
         { }
 
-        public override double GetFuelPrice()
+        public override double CalcFuelPrice()
         {
             double totalCost = GetFuelUsage() * FuelPrice;
             if (PassengersCount > 0)

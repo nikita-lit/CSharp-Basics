@@ -5,7 +5,7 @@
         public string Type { get; set; }
 
         public double GetFuelUsage(); // каждые 100 km
-        public double GetFuelPrice();
+        public double CalcFuelPrice();
         public double GetTraveledDistance();
     }
 }
