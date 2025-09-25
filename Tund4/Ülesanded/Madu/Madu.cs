@@ -2,9 +2,6 @@
 {
     internal class Madu
     {
-        public const int MAP_WIDTH = 32;
-        public const int MAP_HEIGHT = 16;
-
         public static void Start()
         {
             Walls walls = new Walls(MAP_WIDTH, MAP_HEIGHT);
