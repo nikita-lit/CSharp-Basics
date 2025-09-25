@@ -2,24 +2,21 @@
 {
     public class FoodCreator
     {
-        private int _mapWidth;
-        private int _mapHeight;
         private char _sym;
 
         public Random Rand = new Random();
 
-        public FoodCreator(int mapWidth, int mapHeight, char sym)
+        public FoodCreator(char sym)
         {
-            _mapWidth = mapWidth;
-            _mapHeight = mapHeight;
             _sym = sym;
         }
 
-        public Point CreateFood()
+        public Food CreateFood()
         {
-            int x = Rand.Next(2, _mapWidth - 2);
-            int y = Rand.Next(2, _mapHeight - 2);
-            var food = new Point(x, y, _sym);
+            int x = Rand.Next(2, Madu.Map.Width - 2);
+            int y = Rand.Next(2, Madu.Map.Height - 2);
+
+            var food = new Food(x, y, _sym, 1);
             Console.ForegroundColor = ConsoleColor.Green;
             food.Draw();
             Console.ForegroundColor = ConsoleColor.White;

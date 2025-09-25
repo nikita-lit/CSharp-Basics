@@ -2,69 +2,91 @@
 {
     internal class Madu
     {
+        public static Map Map;
+        public static Snake Snake;
+        public static FoodCreator FoodCreator;
+
+        public static bool IsPaused = false;
+
+        private static int _points;
+
+        public static void AddPoints(int count)
+        {
+            _points = _points + count;
+            DrawPoints(_points);
+        }
+
+        public static Snake CreateSnake()
+        {
+            Point p = new Point(15, 5, '*');
+            return new Snake(p, 4, Direction.Right);
+        }
+
         public static void Start()
         {
-            Walls walls = new Walls(MAP_WIDTH, MAP_HEIGHT);
-            walls.Draw();
+            Console.SetWindowSize(300, 300);
+            Console.SetBufferSize(300, 300);
 
-            Point p = new Point(4, 5, '*');
-            Snake snake = new Snake(p, 4, Direction.Right);
-            snake.Draw();
+            Map = new Map(35, 15);
+            Map.AddFigure(new HorizontalLine(0, Map.Width, 0, '+'));
+            Map.AddFigure(new HorizontalLine(0, Map.Width, Map.Height, '+'));
+            Map.AddFigure(new VerticalLine(0, Map.Height, 0, '+'));
+            Map.AddFigure(new VerticalLine(0, Map.Height, Map.Width, '+'));
+            Map.Draw();
 
-            FoodCreator foodCreator = new FoodCreator(MAP_WIDTH, MAP_HEIGHT, '$');
-            Point food = foodCreator.CreateFood();
+            Snake = CreateSnake();
+            Snake.Draw();
+            Map.AddObject(Snake);
 
-            int points = 0;
-            DrawPoints(points);
+            FoodCreator = new FoodCreator('$');
+            Map.AddObject(FoodCreator.CreateFood());
 
-            bool isPaused = false;
+            DrawPoints(_points);
 
             while (true)
             {
-                if (walls.IsHit(snake) || snake.IsHitTail())
-                    break;
+                Map.Update();
 
-                if (!isPaused)
-                {
-                    if (snake.Eat(food))
-                    {
-                        food = foodCreator.CreateFood();
-                        points++;
-                        DrawPoints(points);
-                    }
-                    else
-                        snake.Move();
-                }
+                if (Snake.IsHit())
+                    break;
 
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey(true);
-                    if (!isPaused)
-                        snake.HandleKey(key.Key);
+                    if (!IsPaused)
+                        Snake.HandleKey(key.Key);
 
-                    if (key.Key == ConsoleKey.T)
-                    {
-                        isPaused = !isPaused;
-                        string gamePaused = "GAME PAUSED";
-
-                        if (isPaused)
-                        {
-                            Console.SetCursorPosition(MAP_WIDTH + 5, 1);
-                            Console.WriteLine(gamePaused);
-                        }
-                        else
-                        {
-                            Console.SetCursorPosition(MAP_WIDTH + 5, 1);
-                            Console.WriteLine(new string(' ', gamePaused.Length));
-                        }
-                    }
+                    HandleKey(key.Key);
                 }
-
-                Thread.Sleep(100);
             }
 
+            DrawGameOver();
+        }
+
+        public static void HandleKey(ConsoleKey key)
+        {
+            if (key == ConsoleKey.T)
+            {
+                IsPaused = !IsPaused;
+                string gamePaused = "GAME PAUSED";
+
+                if (IsPaused)
+                {
+                    Console.SetCursorPosition(Map.Width + 5, 1);
+                    Console.WriteLine(gamePaused);
+                }
+                else
+                {
+                    Console.SetCursorPosition(Map.Width + 5, 1);
+                    Console.WriteLine(new string(' ', gamePaused.Length));
+                }
+            }
+        }
+
+        public static void DrawGameOver()
+        {
             string gameOver = "<== GAME OVER ==>";
-            Console.SetCursorPosition((MAP_WIDTH/2) - (gameOver.Length/2), MAP_HEIGHT/2);
+            Console.SetCursorPosition((Map.Width / 2) - (gameOver.Length / 2), Map.Height / 2);
 
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(gameOver);
@@ -75,7 +97,7 @@
 
         public static void DrawPoints(int points)
         {
-            Console.SetCursorPosition(MAP_WIDTH + 5, 0);
+            Console.SetCursorPosition(Map.Width + 5, 0);
             Console.WriteLine($"POINTS: {points}");
         }
     }
