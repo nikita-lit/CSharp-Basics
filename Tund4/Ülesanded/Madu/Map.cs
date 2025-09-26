@@ -1,13 +1,13 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿using System.Linq;
+
+namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Map
     {
         public int Width { get; private set; }
         public int Height { get; private set; }
 
-        public List<Figure> Figures { get; private set; } = new();
         public List<IMapObject> Objects { get; private set; } = new();
-        public List<IMapObject> ObjectsToRemove { get; private set; } = new();
 
         public Map(int width, int height)
         {
@@ -15,49 +15,49 @@
             Height = height;
         }
 
-        public void AddFigure(Figure figure)
-        {
-            Figures.Add(figure);
-        }
-
         public void AddObject(IMapObject obj)
         {
+            if (obj == null || Objects.Contains(obj)) 
+                return;
+
             Objects.Add(obj);
         }
 
         public void RemoveObject(IMapObject obj)
         {
-            ObjectsToRemove.Add(obj);
+            Objects.Remove(obj);
         }
 
-        public bool IsHit(Figure figureA)
+        public IMapObject IsHit(IMapObject objA)
         {
-            foreach (var figureB in Figures)
+            foreach (var objB in Objects)
             {
-                if (figureB.IsHit(figureA))
-                    return true;
+                if (objA != objB 
+                    && objB.Figure.IsHit(objA.Figure))
+                    return objB;
             }
 
-            return false;
+            return null;
         }
 
         public void Draw()
         {
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            foreach (var f in Figures)
-                f.Draw();
-            Console.ForegroundColor = ConsoleColor.White;
+            foreach (var obj in Objects)
+                obj.Draw();
         }
 
         public void Update()
         {
-            foreach (var obj in Objects)
-                obj.Update();
-
-            foreach (var obj in ObjectsToRemove)
+            for (int i = 0; i < Objects.Count; i++)
             {
-                obj.Figure.Clear();
-                Objects.Remove(obj);
+                var obj = Objects[i];
+
+                var isHit = IsHit(obj);
+                if (isHit != null)
+                    obj.OnHit(isHit);
+
+                if (obj != null)
+                    obj.Update();
             }
         }
     }

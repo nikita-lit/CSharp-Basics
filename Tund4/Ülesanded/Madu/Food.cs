@@ -1,19 +1,19 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿using System.Numerics;
+
+namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Food : IMapObject
     {
         public Figure Figure { get; set; } = new();
         public int Points { get; private set; }
 
-        public Food(int x, int y, char sym, int points) 
+        public Food(Vector2 pos, char sym, int points) 
         {
-            var point = new Point(x, y, sym);
+            var point = new Point(pos, sym);
             Figure.List.Add(point);
 
             Points = points;
         }
-
-        public void Update() { }
 
         public void Draw()
         {
@@ -22,7 +22,8 @@
 
         public void Remove()
         {
-            Madu.Map.RemoveObject(this);
+            Figure.Clear();
+            Game.Map.RemoveObject(this);
         }
     }
 }

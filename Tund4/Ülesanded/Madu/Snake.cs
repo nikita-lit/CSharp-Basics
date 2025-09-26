@@ -1,18 +1,34 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿using System.Numerics;
+
+namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Snake : IMapObject
     {
         public Figure Figure { get; set; } = new();
+        public Point Head => Figure.List.First();
         public Direction Direction;
 
-        public Snake(Point tail, int length, Direction direction)
+        public Snake(Vector2 pos, Point head, Point tail, int length, Direction direction)
         {
             Direction = direction;
+            Figure.List.Add(head);
+            Head.SetPos(pos);
+
+            AddTailSegment(tail, length, direction);
+        }
+
+        public void AddTailSegment(Point tail, int length, Direction direction)
+        {
             for (int i = 0; i < length; i++)
             {
                 Point p = new Point(tail);
-                p.Move( i, Direction);
-                Figure.List.Add( p );
+                p.SetPos(Head.Position);
+                p.Move(direction.GetOpposite());
+
+                for (int j = 0; j < i; j++)
+                    p.Move(direction.GetOpposite());
+
+                Figure.List.Add(p);
             }
         }
 
@@ -20,19 +36,15 @@
 
         public void Update()
         {
-            if (Madu.IsPaused) return;
+            if (Game.IsPaused) return;
 
             if ((DateTime.Now - _updateTime).TotalMilliseconds >= 100)
             {
                 _updateTime = DateTime.Now;
-
-                foreach (var obj in Madu.Map.Objects)
+                if (IsHitTail())
                 {
-                    if (obj is Food food && Eat(food))
-                    {
-                        Madu.AddPoints(food.Points);
-                        return;
-                    }
+                    Game.End();
+                    return;
                 }
 
                 Move();
@@ -44,39 +56,37 @@
             Figure.Draw();
         }
 
+        public void OnHit(IMapObject hit)
+        {
+            if (hit is Food food && Eat(food))
+                Game.AddPoints(food.Points);
+            else
+                Game.End();
+        }
+
         public void Remove() { }
 
         public void Move()
         {
-            Point tail = Figure.List.First();
-            Figure.List.Remove(tail);
+            var tail = Figure.List;
+            for (int i = tail.Count - 1; i > 0; i--)
+            {
+                tail[i].SetPos(tail[i - 1].Position);
+            }
 
-            Point head = GetNextPoint();
-            Figure.List.Add(head);
+            Head.Move(Direction);
 
-            tail.Clear();
-            head.Draw();
-        }
-
-        public Point GetNextPoint()
-        {
-            Point head = Figure.List.Last();
-            Point nextPoint = new Point(head);
-            nextPoint.Move(1, Direction);
-            return nextPoint;
-        }
-
-        public bool IsHit()
-        {
-            return Madu.Map.IsHit(Figure) || IsHitTail();
+            for (int i = tail.Count - 1; i > 0; i--)
+                tail[i].Draw();
         }
 
         public bool IsHitTail()
         {
-            var head = Figure.List.Last();
-            for (int i = 0; i < Figure.List.Count - 2; i++)
+            var tail = Figure.List;
+            for (int i = tail.Count - 1; i > 0; i--)
             {
-                if (head.IsHit(Figure.List[i]))
+                var point = tail[i];
+                if (Head.IsHit(point))
                     return true;
             }
 
@@ -97,11 +107,10 @@
 
         public bool Eat(Food food)
         {
-            Point head = GetNextPoint();
-            if (food.Figure.IsHit(head))
+            if (food.Figure.IsHit(Head))
             {
                 food.Remove();
-                Figure.List.Add(new Point(head));
+                AddTailSegment(Figure.List.Last(), 1, Direction);
                 return true;
             }
 

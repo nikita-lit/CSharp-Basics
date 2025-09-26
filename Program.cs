@@ -4,7 +4,7 @@
     {
         public static void Main(string[] args)
         {
-            Tund4.Ülesanded.Madu.Madu.Start();
+            Tund4.Ülesanded.Madu.Program.Start();
         }
     }
 }

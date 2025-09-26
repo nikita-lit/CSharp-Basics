@@ -3,8 +3,9 @@
     public interface IMapObject
     {
         public Figure Figure { get; set; }
-        public abstract void Draw();
-        public abstract void Update();
+        public void Draw() { }
+        public void Update() { }
         public abstract void Remove();
+        public void OnHit(IMapObject hit) { }
     }
 }

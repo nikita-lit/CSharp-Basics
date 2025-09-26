@@ -1,42 +1,69 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿using System.Numerics;
+
+namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Point
     {
-        public int X; 
-        public int Y;
+        public Vector2 Position { get; private set; }
         public char Sym;
+
+        public int X => (int)Position.X;
+        public int Y => (int)Position.Y;
 
         public Point() { }
 
-        public Point(int x, int y, char sym)
+        public Point(Vector2 pos, char sym)
         {
-            X = x;
-            Y = y;
+            Position = pos;
+            Sym = sym;
+        }
+
+        public Point(char sym)
+        {
+            Position = Vector2.Zero;
             Sym = sym;
         }
 
         public Point(Point p)
         {
-            X = p.X;
-            Y = p.Y;
+            Position = p.Position;
             Sym = p.Sym;
         }
 
-        public void Move(int offset, Direction direction)
+        public void SetPos(Vector2 pos)
         {
-            if (direction == Direction.Right)
-                X += offset;
-            else if (direction == Direction.Left)
-                X -= offset;
-            else if (direction == Direction.Up)
-                Y -= offset;
-            else if (direction == Direction.Down)
-                Y += offset;
+            Clear();
+            Position = pos; 
+        }
+
+        public void SetPos(int x, int y)
+        {
+            Clear();
+            Position = new Vector2(x, y); 
+        }
+
+        public void Move(Direction direction)
+        {
+            switch (direction)
+            {
+                case Direction.Up:
+                    SetPos((int)Position.X, (int)Position.Y - 1);
+                    break;
+                case Direction.Down:
+                    SetPos((int)Position.X, (int)Position.Y + 1);
+                    break;
+                case Direction.Left:
+                    SetPos((int)Position.X - 1, (int)Position.Y);
+                    break;
+                case Direction.Right:
+                    SetPos((int)Position.X + 1, (int)Position.Y);
+                    break;
+            }
         }
 
         public bool IsHit(Point p)
         {
-            return p.X == X && p.Y == Y;
+            return Position == p.Position;
         }
 
         public void Draw()
@@ -47,8 +74,8 @@
 
         public void Clear()
         {
-            Sym = ' ';
-            Draw();
+            Console.SetCursorPosition(X, Y);
+            Console.Write(' ');
         }
 
         public override string ToString()

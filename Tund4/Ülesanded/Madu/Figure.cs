@@ -37,10 +37,7 @@
         public void Clear()
         {
             foreach (var point in List)
-            {
-                point.Sym = ' ';
-                point.Draw();
-            }
+                point.Clear();
 
             List.Clear();
         }
