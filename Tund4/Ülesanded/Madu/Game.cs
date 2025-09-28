@@ -1,30 +1,43 @@
-﻿using System.Numerics;
+﻿using Spectre.Console;
+using System.Numerics;
 
 namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
+    public enum GameState
+    {
+        NotStarted,
+        InProgress,
+        GameOver,
+    }
+
     public partial class Game
     {
         public static Map Map;
+        public static Level Level;
         public static Snake Snake;
         public static FoodCreator FoodCreator;
 
-        public static bool IsGameStarted = false;
+        public static GameState State = GameState.NotStarted;
         public static bool IsPaused = false;
 
         private static int _points;
+        private static DateTime LevelStartTime;
 
-        public static void Start()
+        public static void Start(int level)
         {
             Console.Clear();
-            IsGameStarted = true;
+            State = GameState.InProgress;
 
-            Map = new Map(35, 15);
-            Map.AddObject(new HorizontalLine(0, Map.Width, 0, '—'));
-            Map.AddObject(new HorizontalLine(0, Map.Width, Map.Height, '—'));
-            Map.AddObject(new VerticalLine(1, Map.Height, 0, '|'));
-            Map.AddObject(new VerticalLine(1, Map.Height, Map.Width-1, '|'));
+            LevelStartTime = DateTime.Now;
 
-            Map.AddObject(new VerticalLine(1, 5, 8, '#'));
+            Map = new Map();
+
+            if (level == 1)
+                Level = new Level1(new Vector2(0, 4));
+            else if (level == 2)
+                Level = new Level2(new Vector2(0, 4));
+            else if (level == 3)
+                Level = new Level3(new Vector2(0, 4));
 
             Map.Draw();
 
@@ -33,12 +46,12 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             FoodCreator = new FoodCreator('$');
             SpawnFood();
 
-            DrawPoints(_points);
+            DrawInfo();
         }
 
         public static void Update()
         {
-            if (!IsGameStarted)
+            if (State != GameState.InProgress)
                 return;
 
             Map?.Update();
@@ -55,30 +68,50 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 SpawnFood();
         }
 
+        public static void ClearGame()
+        {
+            _points = 0;
+
+            Snake.Remove();
+            Snake = null;
+
+            Map.Clear();
+            Map = null;
+
+            State = GameState.NotStarted;
+        }
+
         public static void End()
         {
-            DrawGameOver();
-            Program.Stop();
+            State = GameState.GameOver;
+            SavePlayerCurrentLevelStats();
+            DrawInfo();
         }
 
         public static void HandleKey(ConsoleKey key)
         {
-            Snake?.HandleKey(key);
-
-            if (key == ConsoleKey.T)
+            if (State == GameState.GameOver)
             {
-                IsPaused = !IsPaused;
-                string gamePaused = "GAME PAUSED";
-
-                if (IsPaused)
+                if (key == ConsoleKey.Enter)
                 {
-                    Console.SetCursorPosition(Map.Width + 5, 1);
-                    Console.WriteLine(gamePaused);
+                    ClearGame();
+                    ShowMenu();
+                    return;
                 }
-                else
+            }
+
+            if (State == GameState.InProgress)
+            {
+                Snake?.HandleKey(key);
+
+                if (key == ConsoleKey.T)
                 {
-                    Console.SetCursorPosition(Map.Width + 5, 1);
-                    Console.WriteLine(new string(' ', gamePaused.Length));
+                    IsPaused = !IsPaused;
+                    DrawGamePause();
+                }
+                else if (key == ConsoleKey.Escape)
+                {
+                    End();
                 }
             }
         }
@@ -86,14 +119,14 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static void AddPoints(int count)
         {
             _points = _points + count;
-            DrawPoints(_points);
+            DrawInfo();
         }
 
         public static Snake CreateSnake()
         {
             Point head = new Point('¤');
             Point tail = new Point('*');
-            return new Snake(new Vector2(Map.Width/2, Map.Height/2), head, tail, 5, Direction.Right);
+            return new Snake(Level.GetSnakeSpawnPos(), head, tail, 1, Direction.Right, $"Snake {Random.Shared.Next(0, 1000)}");
         }
 
         public static void SpawnSnake()
@@ -110,22 +143,48 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 Map.AddObject(food);
         }
 
-        public static void DrawGameOver()
+        public static void ClearInfo()
         {
-            string gameOver = "<== GAME OVER ==>";
-            Console.SetCursorPosition((Map.Width / 2) - (gameOver.Length / 2), Map.Height / 2);
-
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(gameOver);
-            Console.ForegroundColor = ConsoleColor.White;
-
-            Console.ReadKey();
+            for (int i = 0; i < 4; i++)
+            {
+                Console.SetCursorPosition(0, i);
+                Console.Write(new string(' ', 50));
+            }
         }
 
-        public static void DrawPoints(int points)
+        public static void DrawInfo()
         {
-            Console.SetCursorPosition(Map.Width + 5, 0);
-            Console.WriteLine($"POINTS: {points}");
+            ClearInfo();
+            Console.SetCursorPosition(0, 0);
+
+            string text = $"[green]Points:[/] {_points} | [dodgerblue2]Length:[/] {Snake.GetLength()} | [red]Lifes: ♥♥♥[/]";
+            if (State == GameState.GameOver)
+                text += "\n[red bold italic]GAME OVER - Press Enter to continue[/]";
+
+            var panel = new Panel(new Markup(text));
+            panel.Border = BoxBorder.Ascii;
+            AnsiConsole.Write(panel);
+        }
+
+        public static void DrawGamePause()
+        {
+            string gamePaused = "GAME PAUSED";
+            if (IsPaused)
+            {
+                Console.SetCursorPosition(0, 3);
+                Console.WriteLine(gamePaused);
+            }
+            else
+            {
+                Console.SetCursorPosition(0, 3);
+                Console.WriteLine(new string(' ', gamePaused.Length));
+            }
+        }
+
+        public static void TestMessage(string msg)
+        {
+            Console.SetCursorPosition(0, 25);
+            Console.WriteLine(msg);
         }
     }
 }

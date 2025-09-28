@@ -5,15 +5,16 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
     public class Snake : IMapObject
     {
         public Figure Figure { get; set; } = new();
-        public Point Head => Figure.List.First();
+        public Point Head => Figure.List.FirstOrDefault();
         public Direction Direction;
+        public string Name { get; set; }
 
-        public Snake(Vector2 pos, Point head, Point tail, int length, Direction direction)
+        public Snake(Vector2 pos, Point head, Point tail, int length, Direction direction, string name)
         {
             Direction = direction;
             Figure.List.Add(head);
+            Name = name;
             Head.SetPos(pos);
-
             AddTailSegment(tail, length, direction);
         }
 
@@ -32,6 +33,11 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             }
         }
 
+        public int GetLength()
+        {
+            return Figure.List.Count - 1;
+        }
+
         private DateTime _updateTime = DateTime.Now;
 
         public void Update()
@@ -42,12 +48,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             {
                 _updateTime = DateTime.Now;
                 if (IsHitTail())
-                {
                     Game.End();
-                    return;
-                }
-
-                Move();
+                else
+                    Move();
             }
         }
 
@@ -64,7 +67,11 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 Game.End();
         }
 
-        public void Remove() { }
+        public void Remove() 
+        {
+            Figure.Clear();
+            Game.Map.RemoveObject(this);
+        }
 
         public void Move()
         {
@@ -78,6 +85,8 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
             for (int i = tail.Count - 1; i > 0; i--)
                 tail[i].Draw();
+
+            Head.Draw();
         }
 
         public bool IsHitTail()

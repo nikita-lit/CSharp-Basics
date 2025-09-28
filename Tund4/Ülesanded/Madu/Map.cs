@@ -1,19 +1,9 @@
-﻿using System.Linq;
-
-namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Map
     {
-        public int Width { get; private set; }
-        public int Height { get; private set; }
-
         public List<IMapObject> Objects { get; private set; } = new();
-
-        public Map(int width, int height)
-        {
-            Width = width; 
-            Height = height;
-        }
+        public Map() { }
 
         public void AddObject(IMapObject obj)
         {
@@ -51,14 +41,29 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             for (int i = 0; i < Objects.Count; i++)
             {
                 var obj = Objects[i];
+                if (obj == null) 
+                    continue;
+
+                obj.Update();
 
                 var isHit = IsHit(obj);
                 if (isHit != null)
                     obj.OnHit(isHit);
-
-                if (obj != null)
-                    obj.Update();
             }
+        }
+
+        public void Clear()
+        {
+            for (int i = 0; i < Objects.Count; i++)
+            {
+                var obj = Objects[i];
+                if (obj == null)
+                    continue;
+
+                obj.Remove();
+            }
+
+            Objects.Clear();
         }
     }
 }

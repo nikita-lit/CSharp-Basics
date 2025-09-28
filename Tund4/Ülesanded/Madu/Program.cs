@@ -6,12 +6,10 @@
 
         public static void Start()
         {
-            Console.SetWindowSize(300, 300);
-            Console.SetBufferSize(300, 300);
-
-            IsRunning = true;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
 
             Game.ShowMenu();
+            IsRunning = true;
 
             while (IsRunning)
             {
@@ -37,6 +35,7 @@
 
         public static void Stop()
         {
+            Console.Clear();
             IsRunning = false;
         }
     }

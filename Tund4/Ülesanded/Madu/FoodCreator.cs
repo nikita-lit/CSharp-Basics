@@ -15,8 +15,8 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public Food CreateFood()
         {
-            int x = Rand.Next(2, Game.Map.Width - 2);
-            int y = Rand.Next(2, Game.Map.Height - 2);
+            int x = Rand.Next((int)Game.Level.Offset.X, Game.Level.Width);
+            int y = Rand.Next((int)Game.Level.Offset.Y, Game.Level.Height);
             Vector2 pos = new Vector2(x, y);
 
             var food = new Food(pos, _sym, 1);

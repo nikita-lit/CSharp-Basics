@@ -2,16 +2,19 @@
 
 namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
-    public class VerticalLine : IMapObject
+    class Rectangle : IMapObject
     {
         public Figure Figure { get; set; } = new Figure();
 
-        public VerticalLine(int yUp, int yDown, int x, char sym)
+        public Rectangle(Vector2 pos, Vector2 size, char sym)
         {
-            for (int y = yUp; y < yDown; y++)
+            for (int i = 0; i < size.X; i++)
             {
-                Point p = new Point(new Vector2(x, y), sym);
-                Figure.List.Add(p);
+                for (int j = 0; j < size.Y; j++)
+                {
+                    Point p = new Point(new Vector2(pos.X + i, pos.Y + j), sym);
+                    Figure.List.Add(p);
+                }
             }
         }
 
