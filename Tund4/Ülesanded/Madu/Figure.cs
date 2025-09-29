@@ -38,6 +38,12 @@
         {
             foreach (var point in List)
                 point.Clear();
+        }
+
+        public void Remove()
+        {
+            foreach (var point in List)
+                point.Clear();
 
             List.Clear();
         }

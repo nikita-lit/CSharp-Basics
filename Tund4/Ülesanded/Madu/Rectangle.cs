@@ -25,7 +25,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public void Remove()
         {
-            Figure.Clear();
+            Figure.Remove();
             Game.Map.RemoveObject(this);
         }
     }

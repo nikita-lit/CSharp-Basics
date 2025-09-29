@@ -7,13 +7,11 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public Figure Figure { get; set; } = new();
         public Point Head => Figure.List.FirstOrDefault();
         public Direction Direction;
-        public string Name { get; set; }
 
-        public Snake(Vector2 pos, Point head, Point tail, int length, Direction direction, string name)
+        public Snake(Vector2 pos, Point head, Point tail, int length, Direction direction)
         {
             Direction = direction;
             Figure.List.Add(head);
-            Name = name;
             Head.SetPos(pos);
             AddTailSegment(tail, length, direction);
         }
@@ -69,7 +67,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public void Remove() 
         {
-            Figure.Clear();
+            Figure.Remove();
             Game.Map.RemoveObject(this);
         }
 
@@ -85,6 +83,30 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
             for (int i = tail.Count - 1; i > 0; i--)
                 tail[i].Draw();
+
+            Head.Draw();
+        }
+
+        public void SetPos(Vector2 newPos)
+        {
+            Figure.Clear();
+            var tail = Figure.List;
+            if (tail.Count <= 0)
+                return;
+
+            Head.SetPos(newPos);
+
+            for (int i = tail.Count - 1; i > 0; i--)
+            {
+                var p = tail[i];
+                p.SetPos(Head.Position);
+                p.Move(Direction.GetOpposite());
+
+                for (int j = 0; j < i; j++)
+                    p.Move(Direction.GetOpposite());
+
+                p.Draw();
+            }
 
             Head.Draw();
         }

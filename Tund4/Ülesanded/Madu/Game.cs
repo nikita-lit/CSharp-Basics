@@ -13,7 +13,6 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
     public partial class Game
     {
         public static Map Map;
-        public static Level Level;
         public static Snake Snake;
         public static FoodCreator FoodCreator;
 
@@ -23,6 +22,11 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         private static int _points;
         private static DateTime LevelStartTime;
 
+        public static void Init()
+        {
+            InitLevels();
+        }
+
         public static void Start(int level)
         {
             Console.Clear();
@@ -31,15 +35,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             LevelStartTime = DateTime.Now;
 
             Map = new Map();
-
-            if (level == 1)
-                Level = new Level1(new Vector2(0, 4));
-            else if (level == 2)
-                Level = new Level2(new Vector2(0, 4));
-            else if (level == 3)
-                Level = new Level3(new Vector2(0, 4));
-
-            Map.Draw();
+            LoadLevel(level);
 
             SpawnSnake();
 
@@ -71,6 +67,8 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static void ClearGame()
         {
             _points = 0;
+
+            UnloadLevel();
 
             Snake.Remove();
             Snake = null;
@@ -126,7 +124,13 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             Point head = new Point('¤');
             Point tail = new Point('*');
-            return new Snake(Level.GetSnakeSpawnPos(), head, tail, 1, Direction.Right, $"Snake {Random.Shared.Next(0, 1000)}");
+            return new Snake(
+                Level.GetSnakeSpawnPos(), 
+                head, 
+                tail, 
+                1, 
+                Level.GetSnakeSpawnDir() 
+            );
         }
 
         public static void SpawnSnake()
@@ -157,7 +161,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             ClearInfo();
             Console.SetCursorPosition(0, 0);
 
-            string text = $"[green]Points:[/] {_points} | [dodgerblue2]Length:[/] {Snake.GetLength()} | [red]Lifes: ♥♥♥[/]";
+            string text = $"[green]Points:[/] {_points} | [dodgerblue2]Length:[/] {Snake?.GetLength()} | [red]Lifes: ♥♥♥[/]";
             if (State == GameState.GameOver)
                 text += "\n[red bold italic]GAME OVER - Press Enter to continue[/]";
 

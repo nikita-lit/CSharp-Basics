@@ -23,9 +23,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             if (Game.Map.IsHit(food) != null)
                 return null;
 
-            Console.ForegroundColor = ConsoleColor.Green;
             food.Draw();
-            Console.ForegroundColor = ConsoleColor.White;
 
             return food;
         }

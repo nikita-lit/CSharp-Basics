@@ -17,12 +17,14 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public void Draw()
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Figure.Draw();
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public void Remove()
         {
-            Figure.Clear();
+            Figure.Remove();
             Game.Map.RemoveObject(this);
         }
     }

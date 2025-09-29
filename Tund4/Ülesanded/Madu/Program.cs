@@ -7,7 +7,10 @@
         public static void Start()
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
+            Console.SetWindowSize(100, 100);
+            Console.SetBufferSize(100, 100);
 
+            Game.Init();
             Game.ShowMenu();
             IsRunning = true;
 

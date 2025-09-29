@@ -64,9 +64,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             var input = AnsiConsole.Prompt(prompt);
             switch (input)
             {
-                case "Level 1": Start(1); break;
-                case "Level 2": Start(2); break;
-                case "Level 3": Start(3); break;
+                case "Level 1": Start(0); break;
+                case "Level 2": Start(1); break;
+                case "Level 3": Start(2); break;
                 case "Back": ShowMenu(); break;
             }
         }
@@ -92,9 +92,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             var chart = new BarChart();
             chart.Width(60);
 
-            for (int i = 0; i < Level.MAX_LEVEL; i++)
+            for (int i = 0; i < GetLevelsCount(); i++)
             {
-                var stats = Player.GetLevelStats(i + 1);
+                var stats = Player.GetLevelStats(i);
                 int points = 0;
                 if (stats.Count > 0)
                     points = stats.Max(s => s.Points); // лучший результат
