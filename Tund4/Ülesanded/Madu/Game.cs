@@ -1,5 +1,4 @@
 ﻿using Spectre.Console;
-using System.Numerics;
 
 namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
@@ -25,6 +24,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static void Init()
         {
             InitLevels();
+            LoadPlayers();
         }
 
         public static void Start(int level)
@@ -165,8 +165,11 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             if (State == GameState.GameOver)
                 text += "\n[red bold italic]GAME OVER - Press Enter to continue[/]";
 
-            var panel = new Panel(new Markup(text));
-            panel.Border = BoxBorder.Ascii;
+            var panel = new Panel(new Markup(text))
+            {
+                Border = BoxBorder.Ascii,
+            };
+
             AnsiConsole.Write(panel);
         }
 

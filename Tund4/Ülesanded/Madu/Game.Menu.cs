@@ -10,8 +10,26 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static void CreatePlayer()
         {
             var name = AnsiConsole.Prompt(new TextPrompt<string>("What's your name? => "));
-            Player = new Player(name.Trim());
-            Player.LoadPlayerStats();
+            var player = Players.Find(x => x.Name == name);
+
+            if (player != null)
+                Player = player;
+            else
+            {
+                Player = new Player(name.Trim());
+                Player.LoadPlayerStats();
+            }
+        }
+
+        public static void ClearMenu()
+        {
+            AnsiConsole.Clear();
+
+            var title = new FigletText("SNAKE GAME");
+            title.LeftJustified();
+            title.Color(Color.Green1);
+
+            AnsiConsole.Write(title);
         }
 
         public static void ShowMenu()
@@ -34,24 +52,10 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             switch (input)
             {
                 case "Start Game": ShowStartGame(); break;
-                case "Statistics":
-                    ClearMenu();
-                    ShowStatistics(); 
-                    break;
+                case "Statistics": ClearMenu(); ShowStatistics(); break;
                 case "Quit": Program.Stop(); break;
                 default: Start(1); break;
             }
-        }
-
-        public static void ClearMenu()
-        {
-            Console.Clear();
-
-            var title = new FigletText("SNAKE GAME");
-            title.LeftJustified();
-            title.Color(Color.Green1);
-
-            AnsiConsole.Write(title);
         }
 
         public static void ShowStartGame()
@@ -74,21 +78,22 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static void ShowStatistics()
         {
             var prompt = new SelectionPrompt<string>();
-            prompt.AddChoices(["My statistics", "Leaderboard", "Back"]);
+            prompt.AddChoices(["My statistics", "History", "Leaderboard", "Back"]);
 
             var input = AnsiConsole.Prompt(prompt);
-            if (input == "Back")
-                ShowMenu();
-            else if (input == "My statistics")
-                ShowPlayerStatistics();
-            else if (input == "Leaderboard")
-                ShowLeaderboard();
+
+            switch (input)
+            {
+                case "My statistics": ShowPlayerStatistics(); break;
+                case "History": ShowHistory(); break;
+                case "Leaderboard": ShowLeaderboard(); break;
+                case "Back": ShowMenu(); break;
+            }
         }
 
         public static void ShowPlayerStatistics()
         {
             ClearMenu();
-
             var chart = new BarChart();
             chart.Width(60);
 
@@ -110,6 +115,30 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             };
 
             AnsiConsole.Write(panel);
+            Console.WriteLine();
+
+            ShowStatistics();
+        }
+
+        public static void ShowHistory()
+        {
+            ClearMenu();
+
+            var list = Player.LevelsStats.OrderBy(x => x.StartTime);
+            foreach (var stats in list)
+            {
+                var markup = new Markup($"Date: {stats.StartTime}\nLevel: {stats.Level+1}\nTime: {stats.Time:mm\\:ss}\nPoints: {stats.Points}\nLifes: {stats.Lifes}");
+                var table = new Table();
+
+                table.AddColumn($"Level: {stats.Level+1}");
+                table.AddRow(markup);
+                table.Border = TableBorder.Ascii2;
+
+                AnsiConsole.Write(table);
+            }
+
+            if (!list.Any())
+                AnsiConsole.MarkupLine("[red]No History[/]");
 
             Console.WriteLine();
             ShowStatistics();
@@ -118,34 +147,49 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static void ShowLeaderboard()
         {
             ClearMenu();
+            List<Panel> panels = new();
 
-            var dict = new Dictionary<string, int>
+            for (int i = 0; i < GetLevelsCount(); i++)
             {
-                { "Player1", 5 },
-                { "Player2", 10 },
-                { "Player3", 4 },
-                { "Player4", 8 },
-                { "Player5", 12 },
-            };
+                var sb = new StringBuilder();
+                Dictionary<Player, int> playersStats = new(); // игрок, лучший результат
 
-            var dict2 = dict.OrderByDescending(x => x.Value);
+                foreach (var player in Players)
+                {
+                    var levelStats = player.GetLevelStats(i).OrderByDescending(x => x.Points);
+                    var bestStats = levelStats.FirstOrDefault();
+                    int points = 0;
+                    if (bestStats != null)
+                        points = bestStats.Points;
 
-            var sb = new StringBuilder();
-            int num = 0;
-            foreach (var kv in dict2)
-            {
-                num++;
-                sb.AppendLine($"{num}. {kv.Key} = {kv.Value}p");
+                    playersStats[player] = points;
+                }
+
+                var players = playersStats.OrderByDescending(kv => kv.Value);
+
+                int num = 0;
+                foreach (var kv in players)
+                {
+                    num++;
+                    sb.AppendLine($"{num}. {kv.Key.Name} - {kv.Value}");
+                }
+
+                var panel = new Panel(new Markup(sb.ToString()))
+                {
+                    Border = BoxBorder.None,
+                };
+                panels.Add(panel);
             }
 
-            var panel = new Panel(new Markup(sb.ToString()))
-            {
-                Header = new PanelHeader("[blue bold]Leaderboard[/]").Centered(),
-                Border = BoxBorder.Ascii,
-                Padding = new Padding(2, 1),
-            };
+            var table = new Table();
+            table.Title("[blue bold]Leaderboard[/]");
 
-            AnsiConsole.Write(panel);
+            for (int i = 0; i < GetLevelsCount(); i++)
+                table.AddColumn($"Level: {i + 1}");
+
+            table.AddRow(panels.ToArray());
+            table.Border = TableBorder.Ascii2;
+            AnsiConsole.Write(table);
 
             Console.WriteLine();
             ShowStatistics();

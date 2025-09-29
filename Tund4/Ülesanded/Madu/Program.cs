@@ -36,6 +36,9 @@
             Game.HandleKey(key);
         }
 
+        public static string GetBaseDir() => 
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\tund4\\ülesanded\\madu");
+
         public static void Stop()
         {
             Console.Clear();

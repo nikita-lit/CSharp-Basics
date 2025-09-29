@@ -41,14 +41,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             SavePlayerStatsToFile();
         }
 
-        public List<LevelStats> GetLevelStats(int level)
-        {
-            return LevelsStats.FindAll(x => x.Level == level).ToList();
-        }
-
-        public string GetStatsPath()
-        {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $"..\\..\\..\\tund4\\ülesanded\\madu\\stats\\{Name.ToLower()}.json");
-        }
+        public List<LevelStats> GetLevelStats(int level) => LevelsStats.FindAll(x => x.Level == level).ToList();
+        public string GetStatsPath() => Path.Combine(Program.GetBaseDir(), $"stats\\{Name.ToLower()}.json");
     }
 }
