@@ -1,6 +1,6 @@
 ﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
-    public static class Program
+    public static partial class Program
     {
         public static bool IsRunning { get; private set; } = false;
 

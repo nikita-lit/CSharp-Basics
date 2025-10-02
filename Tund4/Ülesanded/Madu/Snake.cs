@@ -55,7 +55,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             if (Game.IsPaused) return;
 
-            if ((DateTime.Now - _updateTime).TotalMilliseconds >= 100)
+            if ((DateTime.Now - _updateTime).TotalMilliseconds >= Game.Level.GetSnakeSpeed())
             {
                 _updateTime = DateTime.Now;
                 if (IsHitTail())
@@ -153,6 +153,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             if (food.Figure.IsHit(Head))
             {
+                Program.PlaySound("eat.wav");
                 food.Remove();
                 AddTailSegment(Figure.List.Last(), 1, Direction);
                 return true;

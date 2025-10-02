@@ -12,18 +12,17 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public override void Init()
         {
-            Objects.Add(new Rectangle(new Vector2(1, 0) + Offset, new Vector2(Width - 1, 1), '—'));
-            Objects.Add(new Rectangle(new Vector2(1, Height + 1) + Offset, new Vector2(Width - 1, 1), '—'));
-            Objects.Add(new Rectangle(new Vector2(0, 1) + Offset, new Vector2(1, Height), '|'));
-            Objects.Add(new Rectangle(new Vector2(Width, 1) + Offset, new Vector2(1, Height), '|'));
+            CreateWalls();
 
-            Objects.Add(new Rectangle(new Vector2(5, 2) + Offset, new Vector2(5, 2), '#'));
+            Objects.Add(new Rectangle(new Vector2(5, 2) + Offset, new Vector2(5, 3), '#'));
+            Objects.Add(new Rectangle(new Vector2(Width - 10, 2) + Offset, new Vector2(5, 3), '#'));
 
-            foreach (var obj in Objects)
-                Game.Map.AddObject(obj);
+            Objects.Add(new Rectangle(new Vector2(5, Height - 5) + Offset, new Vector2(5, 3), '#'));
+            Objects.Add(new Rectangle(new Vector2(Width - 10, Height - 5) + Offset, new Vector2(5, 3), '#'));
         }
 
-        public override Vector2 GetSnakeSpawnPos() => new Vector2(10, 10) + Offset;
+        public override Vector2 GetSnakeSpawnPos() => new Vector2(Width/2, Height/2) + Offset;
         public override Direction GetSnakeSpawnDir() => Direction.Right;
+        public override int GetSnakeSpeed() => 130;
     }
 }

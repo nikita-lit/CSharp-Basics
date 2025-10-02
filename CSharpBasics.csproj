@@ -9,10 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Tund4\Ülesanded\Sounds\**" />
+    <EmbeddedResource Remove="Tund4\Ülesanded\Sounds\**" />
+    <None Remove="Tund4\Ülesanded\Sounds\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="Spectre.Console" Version="0.51.1" />
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Tund4\Ülesanded\Madu\Sounds\" />
     <Folder Include="Tund4\Ülesanded\Madu\Stats\" />
   </ItemGroup>
 

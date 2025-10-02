@@ -18,6 +18,15 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public abstract void Init();
 
+        public void CreateWalls()
+        {
+            Objects.Add(new Rectangle(new Vector2(0, -1) + Offset, new Vector2(Width, 1), '—'));
+            Objects.Add(new Rectangle(new Vector2(0, Height) + Offset, new Vector2(Width, 1), '—'));
+
+            Objects.Add(new Rectangle(new Vector2(-1, 0) + Offset, new Vector2(1, Height), '|'));
+            Objects.Add(new Rectangle(new Vector2(Width, 0) + Offset, new Vector2(1, Height), '|'));
+        }
+
         public void Clear()
         {
             foreach (var obj in Objects)
@@ -26,5 +35,6 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public abstract Vector2 GetSnakeSpawnPos();
         public abstract Direction GetSnakeSpawnDir();
+        public abstract int GetSnakeSpeed();
     }
 }
