@@ -44,9 +44,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             LoadLevel(level);
 
             SpawnSnake();
-
-            FoodCreator = new FoodCreator('$');
-            SpawnFood();
+            FoodCreator = new FoodCreator();
 
             DrawInfo();
         }
@@ -57,17 +55,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 return;
 
             Map?.Update();
-
-            int foodCount = 0;
-            for (int i = 0; i < Map.Objects.Count; i++)
-            {
-                var obj = Map.Objects[i];
-                if (obj is Food)
-                    foodCount++;
-            }
-
-            if (foodCount <= 0)
-                SpawnFood();
+            FoodCreator.Update();
         }
 
         public static void ClearGame()
@@ -171,13 +159,6 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             Snake = CreateSnake();
             Snake.Draw();
             Map.AddObject(Snake);
-        }
-
-        public static void SpawnFood()
-        {
-            var food = FoodCreator.CreateFood();
-            if(food != null)
-                Map.AddObject(food);
         }
 
         public static void ClearInfo()

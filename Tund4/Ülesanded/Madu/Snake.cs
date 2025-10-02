@@ -73,7 +73,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public void OnHit(IMapObject hit)
         {
             if (hit is Food food && Eat(food))
-                Game.AddPoints(food.Points);
+                Game.AddPoints(food.GetPoints());
             else
                 Game.OnSnakeHit();
         }

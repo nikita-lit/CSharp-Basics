@@ -4,28 +4,43 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class FoodCreator
     {
-        private char _sym;
+        public List<Food> Foods { get; private set; } = new();
 
-        public Random Rand = new Random();
+        public FoodCreator() { }
 
-        public FoodCreator(char sym)
+        public Food CreateFood(FoodType type)
         {
-            _sym = sym;
-        }
-
-        public Food CreateFood()
-        {
-            int x = Rand.Next((int)Game.Level.Offset.X, Game.Level.Width);
-            int y = Rand.Next((int)Game.Level.Offset.Y, Game.Level.Height);
+            int x = Random.Shared.Next((int)Game.Level.Offset.X, Game.Level.Width);
+            int y = Random.Shared.Next((int)Game.Level.Offset.Y, Game.Level.Height);
             Vector2 pos = new Vector2(x, y);
 
-            var food = new Food(pos, _sym, 1);
+            var food = new Food(pos, type);
             if (Game.Map.IsHit(food) != null)
                 return null;
 
             food.Draw();
-
             return food;
+        }
+
+        public void SpawnFood(FoodType type)
+        {
+            var food = CreateFood(type);
+            if (food != null)
+            {
+                Foods.Add(food);
+                Game.Map.AddObject(food);
+            }
+        }
+
+        public void Update()
+        {
+            if (Foods.Count <= 0)
+            {
+                if (Random.Shared.Next(0, 100) > 80)
+                    SpawnFood(FoodType.Gold);
+
+                SpawnFood(FoodType.Default);
+            }
         }
     }
 }
