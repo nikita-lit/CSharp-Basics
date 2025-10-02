@@ -7,13 +7,16 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public Figure Figure { get; set; } = new();
         public Point Head => Figure.List.FirstOrDefault();
         public Direction Direction;
+        public int StartLength = 1;
 
         public Snake(Vector2 pos, Point head, Point tail, int length, Direction direction)
         {
             Direction = direction;
             Figure.List.Add(head);
             Head.SetPos(pos);
-            AddTailSegment(tail, length, direction);
+
+            StartLength = length;
+            AddTailSegment(tail, StartLength, direction);
         }
 
         public void AddTailSegment(Point tail, int length, Direction direction)
@@ -36,6 +39,16 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             return Figure.List.Count - 1;
         }
 
+        public void ResetLength()
+        {
+            var tail = Figure.List;
+            for (int i = tail.Count - 1 - StartLength; i > 0; i--)
+            {
+                tail[i].Clear();
+                tail.RemoveAt(i);
+            }
+        }
+
         private DateTime _updateTime = DateTime.Now;
 
         public void Update()
@@ -46,7 +59,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             {
                 _updateTime = DateTime.Now;
                 if (IsHitTail())
-                    Game.End();
+                    Game.OnSnakeHit();
                 else
                     Move();
             }
@@ -62,7 +75,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             if (hit is Food food && Eat(food))
                 Game.AddPoints(food.Points);
             else
-                Game.End();
+                Game.OnSnakeHit();
         }
 
         public void Remove() 

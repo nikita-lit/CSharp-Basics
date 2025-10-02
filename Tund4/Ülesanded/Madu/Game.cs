@@ -15,6 +15,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static Snake Snake;
         public static FoodCreator FoodCreator;
 
+        public const int LIFES_COUNT = 3;
+        private static int _lifes = LIFES_COUNT;
+
         public static GameState State = GameState.NotStarted;
         public static bool IsPaused = false;
 
@@ -33,6 +36,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             State = GameState.InProgress;
 
             LevelStartTime = DateTime.Now;
+
+            _lifes = LIFES_COUNT;
+            _points = 0;
 
             Map = new Map();
             LoadLevel(level);
@@ -105,7 +111,10 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 if (key == ConsoleKey.T)
                 {
                     IsPaused = !IsPaused;
-                    DrawGamePause();
+                    if (IsPaused)
+                        ShowMessage("GAME PAUSED");
+                    else
+                        ClearMessage();
                 }
                 else if (key == ConsoleKey.Escape)
                 {
@@ -118,6 +127,30 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             _points = _points + count;
             DrawInfo();
+        }
+
+        public static void OnSnakeHit()
+        {
+            if (_lifes > 1)
+            {
+                _lifes--;
+                Snake.ResetLength();
+                Snake.SetPos(Level.GetSnakeSpawnPos());
+                Snake.Direction = Level.GetSnakeSpawnDir();
+                Snake.Move();
+
+                Map.Draw();
+                DrawInfo();
+
+                ShowMessage("[bold red]Elu on kadunud![/]");
+                Thread.Sleep(2000);
+                ClearMessage();
+            }
+            else
+            {
+                _lifes--;
+                End();
+            }
         }
 
         public static Snake CreateSnake()
@@ -161,7 +194,14 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             ClearInfo();
             Console.SetCursorPosition(0, 0);
 
-            string text = $"[green]Points:[/] {_points} | [dodgerblue2]Length:[/] {Snake?.GetLength()} | [red]Lifes: ♥♥♥[/]";
+            string hearts = "";
+            for (int i = 0; i < _lifes; i++)
+                hearts += "♥";
+
+            for (int i = 0; i < (LIFES_COUNT - _lifes); i++)
+                hearts += "♡";
+
+            string text = $"[green]Points:[/] {_points} | [dodgerblue2]Length:[/] {Snake?.GetLength()} | [red]Lifes: {hearts}[/]";
             if (State == GameState.GameOver)
                 text += "\n[red bold italic]GAME OVER - Press Enter to continue[/]";
 
@@ -173,19 +213,22 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             AnsiConsole.Write(panel);
         }
 
-        public static void DrawGamePause()
+        public static string CurMessage;
+
+        public static void ShowMessage(string msg)
         {
-            string gamePaused = "GAME PAUSED";
-            if (IsPaused)
-            {
-                Console.SetCursorPosition(0, 3);
-                Console.WriteLine(gamePaused);
-            }
-            else
-            {
-                Console.SetCursorPosition(0, 3);
-                Console.WriteLine(new string(' ', gamePaused.Length));
-            }
+            CurMessage = msg;
+            Console.SetCursorPosition(0, 3);
+            AnsiConsole.Write(new Markup(CurMessage));
+        }
+
+        public static void ClearMessage()
+        {
+            if (string.IsNullOrEmpty(CurMessage)) return;
+
+            Console.SetCursorPosition(0, 3);
+            Console.WriteLine(new string(' ', CurMessage.Length));
+            CurMessage = "";
         }
 
         public static void TestMessage(string msg)

@@ -17,10 +17,13 @@
             };
 
             Player.SaveLevelStats(stats);
+            LoadPlayers();
         }
 
         public static void LoadPlayers()
         {
+            Players.Clear();
+
             var files = Directory.GetFiles(Path.Combine(Program.GetBaseDir(), "stats"));
             foreach (var file in files)
             {

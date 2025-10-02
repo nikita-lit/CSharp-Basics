@@ -7,7 +7,18 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
     {
         public static Player Player { get; set; }
 
-        public static void CreatePlayer()
+        public static void LogIn()
+        {
+            ClearMenu();
+
+            if (Player != null)
+                Player = null;
+
+            LogInPlayer();
+            ClearMenu();
+        }
+
+        public static void LogInPlayer()
         {
             var name = AnsiConsole.Prompt(new TextPrompt<string>("What's your name? => "));
             var player = Players.Find(x => x.Name == name);
@@ -37,22 +48,20 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             ClearMenu();
 
             if (Player == null)
-            {
-                CreatePlayer();
-                ClearMenu();
-            }
+                LogIn();
 
             AnsiConsole.MarkupLine($"Player: {Player.Name}");
             Console.WriteLine();
 
             var prompt = new SelectionPrompt<string>();
-            prompt.AddChoices(["Start Game", "Statistics", "Quit"]);
+            prompt.AddChoices(["Start Game", "Statistics", "Log Out", "Quit"]);
 
             var input = AnsiConsole.Prompt(prompt);
             switch (input)
             {
                 case "Start Game": ShowStartGame(); break;
                 case "Statistics": ClearMenu(); ShowStatistics(); break;
+                case "Log Out": LogIn(); ShowMenu(); break;
                 case "Quit": Program.Stop(); break;
                 default: Start(1); break;
             }
@@ -130,7 +139,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 var markup = new Markup($"Date: {stats.StartTime}\nLevel: {stats.Level+1}\nTime: {stats.Time:mm\\:ss}\nPoints: {stats.Points}\nLifes: {stats.Lifes}");
                 var table = new Table();
 
-                table.AddColumn($"Level: {stats.Level+1}");
+                table.AddColumn($"[blue bold]Level: {stats.Level+1}[/]");
                 table.AddRow(markup);
                 table.Border = TableBorder.Ascii2;
 
