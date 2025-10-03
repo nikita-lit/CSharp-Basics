@@ -9,15 +9,19 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public static void PrecacheSound(string path)
         {
-            string fullPath = Path.Combine(GetBaseDir(), $"sounds/{path}");
-            if (!File.Exists(fullPath)) 
-                return;
+            try
+            {
+                string fullPath = Path.Combine(GetBaseDir(), $"sounds/{path}");
+                if (!File.Exists(fullPath))
+                    return;
 
-            var reader = new AudioFileReader(fullPath);
-            var device = new WaveOutEvent();
-            device.Init(reader);
+                var reader = new AudioFileReader(fullPath);
+                var device = new WaveOutEvent();
+                device.Init(reader);
 
-            _soundCache[path] = (device, reader);
+                _soundCache[path] = (device, reader);
+            }
+            catch { } // ignore
         }
 
         public static void PlaySound(string path)
@@ -34,6 +38,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public static void StopSound(string path)
         {
+            if (!_soundCache.ContainsKey(path))
+                return;
+
             var device = _soundCache[path].device;
             var reader = _soundCache[path].reader;
             reader.Position = 0;

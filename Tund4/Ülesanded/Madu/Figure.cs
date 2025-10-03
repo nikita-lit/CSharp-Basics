@@ -1,15 +1,40 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿using System.Numerics;
+
+namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public class Figure
     {
+        public Vector2 Position { get; private set; }
+        public int X => (int)Position.X;
+        public int Y => (int)Position.Y;
+
         public List<Point> List = new();
+
+        public Figure() { }
+
+        public Figure(Figure other)
+        {
+            List = other.List.ToList();
+        }
 
         public void Draw()
         {
             foreach (Point p in List)
-            {
                 p.Draw();
+        }
+
+        public void SetPos(Vector2 pos)
+        {
+            Vector2 currentPos = Position;
+            Vector2 offset = pos - currentPos;
+
+            foreach (Point p in List)
+            {
+                Vector2 pPos = p.Position;
+                p.SetPos(pPos + offset);
             }
+
+            Position = pos;
         }
 
         public bool IsHit(Figure figure)

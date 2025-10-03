@@ -1,4 +1,6 @@
-﻿namespace CSharpBasics.Tund4.Ülesanded.Madu
+﻿using Spectre.Console;
+
+namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
     public static partial class Program
     {
@@ -9,9 +11,10 @@
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.SetWindowSize(100, 100);
             Console.SetBufferSize(100, 100);
+            AnsiConsole.Cursor.Hide();
 
             Game.Init();
-            Game.ShowMenu();
+            Menu.Show();
             IsRunning = true;
 
             while (IsRunning)
@@ -41,7 +44,7 @@
 
         public static void Stop()
         {
-            Console.Clear();
+            AnsiConsole.Clear();
             IsRunning = false;
         }
     }

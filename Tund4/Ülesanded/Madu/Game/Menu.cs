@@ -3,16 +3,14 @@ using System.Text;
 
 namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
-    public partial class Game
+    public static class Menu
     {
-        public static Player Player { get; set; }
-
         public static void LogIn()
         {
             ClearMenu();
 
-            if (Player != null)
-                Player = null;
+            if (Game.Player != null)
+                Game.Player = null;
 
             LogInPlayer();
             ClearMenu();
@@ -20,15 +18,15 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public static void LogInPlayer()
         {
-            var name = AnsiConsole.Prompt(new TextPrompt<string>("What's your name? => "));
-            var player = Players.Find(x => x.Name == name);
+            var name = AnsiConsole.Prompt(new TextPrompt<string>("Mis su nimi on? => "));
+            var player = Game.Players.Find(x => x.Name == name);
 
             if (player != null)
-                Player = player;
+                Game.Player = player;
             else
             {
-                Player = new Player(name.Trim());
-                Player.LoadPlayerStats();
+                Game.Player = new Player(name.Trim());
+                Game.Player.LoadPlayerStats();
             }
         }
 
@@ -36,34 +34,34 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             AnsiConsole.Clear();
 
-            var title = new FigletText("SNAKE GAME");
+            var title = new FigletText("USSI MÄNG");
             title.LeftJustified();
             title.Color(Color.Green1);
 
             AnsiConsole.Write(title);
         }
 
-        public static void ShowMenu()
+        public static void Show()
         {
             ClearMenu();
 
-            if (Player == null)
+            if (Game.Player == null)
                 LogIn();
 
-            AnsiConsole.MarkupLine($"Player: {Player.Name}");
+            AnsiConsole.MarkupLine($"Mängija: {Game.Player.Name}");
             Console.WriteLine();
 
             var prompt = new SelectionPrompt<string>();
-            prompt.AddChoices(["Start Game", "Statistics", "Log Out", "Quit"]);
+            prompt.AddChoices(["Alusta mängu", "Statistika", "Logi Välja", "Välju"]);
 
             var input = AnsiConsole.Prompt(prompt);
             switch (input)
             {
-                case "Start Game": ShowStartGame(); break;
-                case "Statistics": ClearMenu(); ShowStatistics(); break;
-                case "Log Out": LogIn(); ShowMenu(); break;
-                case "Quit": Program.Stop(); break;
-                default: Start(1); break;
+                case "Alusta mängu": ShowStartGame(); break;
+                case "Statistika": ClearMenu(); ShowStatistics(); break;
+                case "Logi Välja": LogIn(); Show(); break;
+                case "Välju": Program.Stop(); break;
+                default: Game.Start(1); break;
             }
         }
 
@@ -72,31 +70,31 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             ClearMenu();
 
             var prompt = new SelectionPrompt<string>();
-            prompt.AddChoices(["Level 1", "Level 2", "Level 3", "Back"]);
+            prompt.AddChoices(["Level 1", "Level 2", "Level 3", "Tagasi"]);
 
             var input = AnsiConsole.Prompt(prompt);
             switch (input)
             {
-                case "Level 1": Start(0); break;
-                case "Level 2": Start(1); break;
-                case "Level 3": Start(2); break;
-                case "Back": ShowMenu(); break;
+                case "Level 1": Game.Start(0); break;
+                case "Level 2": Game.Start(1); break;
+                case "Level 3": Game.Start(2); break;
+                case "Tagasi": Show(); break;
             }
         }
 
         public static void ShowStatistics()
         {
             var prompt = new SelectionPrompt<string>();
-            prompt.AddChoices(["My statistics", "History", "Leaderboard", "Back"]);
+            prompt.AddChoices(["Minu statistika", "Ajalugu", "Edetabel", "Tagasi"]);
 
             var input = AnsiConsole.Prompt(prompt);
 
             switch (input)
             {
-                case "My statistics": ShowPlayerStatistics(); break;
-                case "History": ShowHistory(); break;
-                case "Leaderboard": ShowLeaderboard(); break;
-                case "Back": ShowMenu(); break;
+                case "Minu statistika": ShowPlayerStatistics(); break;
+                case "Ajalugu": ShowHistory(); break;
+                case "Edetabel": ShowLeaderboard(); break;
+                case "Tagasi": Show(); break;
             }
         }
 
@@ -106,9 +104,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             var chart = new BarChart();
             chart.Width(60);
 
-            for (int i = 0; i < GetLevelsCount(); i++)
+            for (int i = 0; i < Game.GetLevelsCount(); i++)
             {
-                var stats = Player.GetLevelStats(i);
+                var stats = Game.Player.GetLevelStats(i);
                 int points = 0;
                 if (stats.Count > 0)
                     points = stats.Max(s => s.Points); // лучший результат
@@ -119,7 +117,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             var panel = new Panel(chart)
             {
                 Border = BoxBorder.Ascii,
-                Header = new PanelHeader($"[blue bold]{Player.Name} - Best Level Points[/]").Centered(),
+                Header = new PanelHeader($"[blue bold]{Game.Player.Name} - Parimad tasemepunktid[/]").Centered(),
                 Padding = new Padding(1, 1),
             };
 
@@ -133,13 +131,13 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             ClearMenu();
 
-            var list = Player.LevelsStats.OrderBy(x => x.StartTime);
+            var list = Game.Player.LevelsStats.OrderBy(x => x.StartTime);
             foreach (var stats in list)
             {
-                var markup = new Markup($"Date: {stats.StartTime}\nLevel: {stats.Level+1}\nTime: {stats.Time:mm\\:ss}\nPoints: {stats.Points}\nLifes: {stats.Lifes}");
+                var markup = new Markup($"Kuupäev: {stats.StartTime}\nLevel: {stats.Level + 1}\nAeg: {stats.Time:mm\\:ss}\nPunktid: {stats.Points}\nElud: {stats.Lifes}");
                 var table = new Table();
 
-                table.AddColumn($"[blue bold]Level: {stats.Level+1}[/]");
+                table.AddColumn($"[blue bold]Level: {stats.Level + 1}[/]");
                 table.AddRow(markup);
                 table.Border = TableBorder.Ascii2;
 
@@ -147,7 +145,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             }
 
             if (!list.Any())
-                AnsiConsole.MarkupLine("[red]No History[/]");
+                AnsiConsole.MarkupLine("[red]Ajalugu puudub[/]");
 
             Console.WriteLine();
             ShowStatistics();
@@ -158,12 +156,12 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             ClearMenu();
             List<Panel> panels = new();
 
-            for (int i = 0; i < GetLevelsCount(); i++)
+            for (int i = 0; i < Game.GetLevelsCount(); i++)
             {
                 var sb = new StringBuilder();
                 Dictionary<Player, int> playersStats = new(); // игрок, лучший результат
 
-                foreach (var player in Players)
+                foreach (var player in Game.Players)
                 {
                     var levelStats = player.GetLevelStats(i).OrderByDescending(x => x.Points);
                     var bestStats = levelStats.FirstOrDefault();
@@ -191,9 +189,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             }
 
             var table = new Table();
-            table.Title("[blue bold]Leaderboard[/]");
+            table.Title("[blue bold]Edetabel[/]");
 
-            for (int i = 0; i < GetLevelsCount(); i++)
+            for (int i = 0; i < Game.GetLevelsCount(); i++)
                 table.AddColumn($"Level: {i + 1}");
 
             table.AddRow(panels.ToArray());

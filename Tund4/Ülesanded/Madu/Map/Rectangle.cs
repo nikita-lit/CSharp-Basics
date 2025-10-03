@@ -2,7 +2,7 @@
 
 namespace CSharpBasics.Tund4.Ülesanded.Madu
 {
-    class Rectangle : IMapObject
+    public class Rectangle : IMapObject
     {
         public Figure Figure { get; set; } = new Figure();
 
@@ -12,10 +12,12 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             {
                 for (int j = 0; j < size.Y; j++)
                 {
-                    Point p = new Point(new Vector2(pos.X + i, pos.Y + j), sym);
+                    Point p = new Point(new Vector2(i, j), sym);
                     Figure.List.Add(p);
                 }
             }
+
+            Figure.SetPos(pos);
         }
 
         public void Draw()

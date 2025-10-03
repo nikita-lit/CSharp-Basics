@@ -22,7 +22,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public static bool IsPaused = false;
 
         private static int _points;
-        private static DateTime LevelStartTime;
+        private static DateTime _levelStartTime;
 
         public static void Init()
         {
@@ -39,10 +39,12 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         {
             Program.PlaySound("bg_music.wav");
 
-            Console.Clear();
+            AnsiConsole.Clear();
+            AnsiConsole.Cursor.Hide();
+
             State = GameState.InProgress;
 
-            LevelStartTime = DateTime.Now;
+            _levelStartTime = DateTime.Now;
 
             _lifes = LIFES_COUNT;
             _points = 0;
@@ -55,7 +57,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
             DrawInfo();
 
-            ShowMessage("GAME IS STARTING!");
+            ShowMessage("MÄNG ALGAB!");
             Thread.Sleep(1000);
             ClearMessage();
         }
@@ -66,6 +68,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 return;
 
             Map?.Update();
+            Level?.Update();
             FoodCreator.Update();
         }
 
@@ -100,7 +103,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 if (key == ConsoleKey.Enter)
                 {
                     ClearGame();
-                    ShowMenu();
+                    Menu.Show();
                     return;
                 }
             }
@@ -113,7 +116,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
                 {
                     IsPaused = !IsPaused;
                     if (IsPaused)
-                        ShowMessage("GAME PAUSED");
+                        ShowMessage("MÄNG ON PAUSIL");
                     else
                         ClearMessage();
                 }
@@ -138,17 +141,19 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
                 Program.PlaySound("error.wav");
 
-                Snake.ResetLength();
-                Snake.SetPos(Level.GetSnakeSpawnPos());
-                Snake.Direction = Level.GetSnakeSpawnDir();
-                Snake.Move();
-
-                Map.Draw();
                 DrawInfo();
 
                 ShowMessage("[bold red]Elu on kadunud![/]");
                 Thread.Sleep(2000);
                 ClearMessage();
+
+                Snake.ResetLength();
+                Snake.SetPos(Level.GetSnakeSpawnPos());
+                Snake.Direction = Level.GetSnakeSpawnDir();
+                Snake.Move();
+                Snake.Direction = Level.GetSnakeSpawnDir();
+
+                Map.Draw();
             }
             else
             {
@@ -198,9 +203,9 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             for (int i = 0; i < (LIFES_COUNT - _lifes); i++)
                 hearts += "♡";
 
-            string text = $"[cyan]Level {GetCurLevelIndex() + 1}[/] | [green]Points:[/] {_points} | [dodgerblue2]Length:[/] {Snake?.GetLength()} | [red]Lifes: {hearts}[/]";
+            string text = $"[cyan]Level {GetCurLevelIndex() + 1}[/] | [green]Punktid:[/] {_points} | [dodgerblue2]Pikkus:[/] {Snake?.GetLength()} | [red]Elud: {hearts}[/]";
             if (State == GameState.GameOver)
-                text += "\n[red bold italic]GAME OVER - Press Enter to continue[/]";
+                text += "\n[red bold italic]MÄNG LÕPETATUD – Vajuta Enter jätkamiseks[/]";
 
             var panel = new Panel(new Markup(text))
             {

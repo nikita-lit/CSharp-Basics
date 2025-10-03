@@ -3,16 +3,17 @@
     public partial class Game
     {
         public static List<Player> Players { get; private set; } = new();
+        public static Player Player { get; set; }
 
         public static void SavePlayerCurrentLevelStats()
         {
-            TimeSpan time = DateTime.Now - LevelStartTime;
+            TimeSpan time = DateTime.Now - _levelStartTime;
             var stats = new LevelStats
             {
                 Level = GetCurLevelIndex(),
-                Lifes = 3,
+                Lifes = _lifes,
                 Points = _points,
-                StartTime = LevelStartTime,
+                StartTime = _levelStartTime,
                 Time = time,
             };
 

@@ -32,7 +32,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         public char GetSym()
         {
             if (Type == FoodType.Gold)
-                return '@';
+                return '£';
 
             return '$';
         }

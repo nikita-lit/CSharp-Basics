@@ -32,9 +32,19 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
             Objects.Add(new Rectangle(new Vector2(25 + 16, 7 + 4) + Offset, new Vector2(1, 2), '#'));
 
             Objects.Add(new Rectangle(new Vector2(50, 7) + Offset, new Vector2(8, 6), '#'));
+
+            var pos = new Vector2(20, 5) + Offset;
+            var wall = new MovingWall(new Rectangle(Vector2.Zero, new Vector2(4, 1), '#'), false, pos, 20);
+            Objects.Add(wall);
+
+            var pos2 = new Vector2(2, 2) + Offset;
+            var wall2 = new MovingWall(new Rectangle(Vector2.Zero, new Vector2(2, 1), '#'), true, pos2, 10);
+            Objects.Add(wall2);
         }
 
-        public override Vector2 GetSnakeSpawnPos() => new Vector2(16, 5) + Offset;
+        public override void Update() { }
+
+        public override Vector2 GetSnakeSpawnPos() => new Vector2(12, 5) + Offset;
         public override Direction GetSnakeSpawnDir() => Direction.Right;
         public override int GetSnakeSpeed() => 120;
     }

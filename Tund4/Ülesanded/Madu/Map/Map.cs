@@ -48,7 +48,10 @@
 
                 var isHit = IsHit(obj);
                 if (isHit != null)
+                {
                     obj.OnHit(isHit);
+                    isHit.OnHit(obj);
+                }
             }
         }
 

@@ -17,6 +17,7 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
         }
 
         public abstract void Init();
+        public abstract void Update();
 
         public void CreateWalls()
         {
