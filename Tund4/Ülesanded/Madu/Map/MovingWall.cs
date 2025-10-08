@@ -26,6 +26,8 @@ namespace CSharpBasics.Tund4.Ülesanded.Madu
 
         public void Update()
         {
+            if(Game.IsPaused) return;
+
             if (_time < DateTime.Now)
             {
                 if (_offset > _maxOffset)
